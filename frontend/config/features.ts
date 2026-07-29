@@ -8,4 +8,4 @@
 //
 // Cuando la tienda esté lista para el público, cambia esto a `true` y haz
 // deploy. No hay que tocar nada más: los botones y las páginas vuelven solos.
-export const STORE_ENABLED = false;
+export const STORE_ENABLED = true;
