@@ -11,12 +11,18 @@ export const revalidate = 60;
 export default async function TiendaPage() {
   const supabase = await createClient();
 
-  const { data: products } = await supabase
+  const { data: products, error } = await supabase
     .from("products")
     .select("*")
     .eq("active", true)
     .order("created_at", { ascending: false })
     .returns<Product[]>();
+
+  // Sin esto, un fallo de esquema o de RLS se ve igual que "no hay
+  // productos" y es muy difícil de diagnosticar desde fuera.
+  if (error) {
+    console.error("[tienda] error al leer productos de Supabase:", error);
+  }
 
   return (
     <div>

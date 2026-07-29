@@ -108,7 +108,16 @@ export async function POST(request: Request) {
     }))
   );
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+  // El dominio se deduce de la propia petición para que las URLs de vuelta
+  // de Stripe apunten siempre al sitio real (evita mandar al cliente a
+  // localhost si NEXT_PUBLIC_SITE_URL se quedó mal configurada en Vercel).
+  const siteUrl =
+    request.headers.get("origin") ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : undefined) ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "http://localhost:3000";
 
   const stripeLineItems = lineItems.map((i) => ({
     price_data: {

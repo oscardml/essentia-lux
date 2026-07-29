@@ -23,6 +23,11 @@ export default function RegistroPage() {
       password,
       options: {
         data: { full_name: fullName },
+        // Sin esto, el enlace del email de confirmación usa el "Site URL"
+        // configurado en Supabase (que apuntaba a localhost). Tomando el
+        // origen real del navegador, el enlace siempre lleva al dominio
+        // desde el que el usuario se ha registrado.
+        emailRedirectTo: `${window.location.origin}/login`,
       },
     });
 
