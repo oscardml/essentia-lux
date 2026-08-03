@@ -32,6 +32,12 @@ export async function POST(request: Request) {
       .single();
 
     if (order && order.status !== "paid") {
+      // En las compras sin cuenta el pedido se crea sin email, así que lo
+      // tomamos de Stripe (que siempre lo pide al pagar). Sin esto no habría
+      // forma de avisar al cliente del estado de su pedido.
+      const customerEmail =
+        session.customer_details?.email ?? session.customer_email ?? null;
+
       await admin
         .from("orders")
         .update({
@@ -41,6 +47,7 @@ export async function POST(request: Request) {
               ? session.payment_intent
               : session.payment_intent?.id,
           shipping_address: session.collected_information?.shipping_details ?? null,
+          ...(customerEmail ? { customer_email: customerEmail } : {}),
         })
         .eq("id", order.id);
 
