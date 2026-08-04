@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { socialNetworks } from "@/data";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -144,47 +143,16 @@ const Header = () => {
               </div>
             </Link>
 
-            {/* Redes sociales */}
-            <div 
+            {/* Cuenta y carrito. Las redes sociales viven ahora en el footer:
+                la cabecera se reserva para lo accionable del propio sitio. */}
+            <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '12px',
+                gap: '4px',
               }}
             >
-              {socialNetworks.map(({ id, logo, src }) => (
-                <Link
-                  key={id}
-                  href={src}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    padding: '10px',
-                    borderRadius: '50%',
-                    transition: 'all 0.3s',
-                    border: '1px solid transparent',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minWidth: '48px',
-                    minHeight: '48px',
-                  }}
-                  aria-label={`Visitar ${id}`}
-                >
-                  <div
-                    style={{
-                      fontSize: '24px',
-                      color: '#6B7280',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {logo}
-                  </div>
-                </Link>
-              ))}
               {STORE_ENABLED && <CartNavItem />}
               {STORE_ENABLED && <AuthNavItem />}
             </div>
@@ -244,22 +212,9 @@ const Header = () => {
               </div>
             </Link>
 
-            {/* Redes sociales responsivas mejoradas */}
-            <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5">
-              {socialNetworks.map(({ id, logo, src }) => (
-                <Link
-                  key={id}
-                  href={src}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 sm:p-3 md:p-3.5 rounded-full transition-all duration-300 hover:bg-gray-50 hover:shadow-sm hover:scale-110 active:scale-95 touch-target border border-transparent hover:border-gray-200"
-                  aria-label={`Visitar ${id}`}
-                >
-                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-600 hover:text-primary transition-colors duration-300 flex items-center justify-center">
-                    {logo}
-                  </div>
-                </Link>
-              ))}
+            {/* Cuenta y carrito. Las redes sociales viven ahora en el footer:
+                la cabecera se reserva para lo accionable del propio sitio. */}
+            <div className="flex items-center justify-center gap-1 sm:gap-2">
               {STORE_ENABLED && <CartNavItem />}
               {STORE_ENABLED && <AuthNavItem />}
             </div>

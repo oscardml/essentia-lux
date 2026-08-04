@@ -3,15 +3,24 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
+import { useAuth } from "@/lib/auth-context";
 import { formatPrice, formatProductName } from "@/types/product";
 
 export default function CarritoPage() {
+  const router = useRouter();
   const { items, updateQuantity, removeItem, totalCents } = useCart();
+  const { user, loaded } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleCheckout = async () => {
+    if (!user) {
+      router.push("/login?redirectTo=/carrito");
+      return;
+    }
+
     setError(null);
     setLoading(true);
 
@@ -126,8 +135,19 @@ export default function CarritoPage() {
           disabled={loading}
           className="w-full bg-gradient-to-r from-[#6A806C] to-[#AF7E44] text-white py-4 px-8 rounded-xl font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
         >
-          {loading ? "Redirigiendo al pago..." : "Pagar con tarjeta"}
+          {loading
+            ? "Redirigiendo al pago..."
+            : loaded && !user
+            ? "Inicia sesión para pagar"
+            : "Pagar con tarjeta"}
         </button>
+
+        {loaded && !user && (
+          <p className="text-center text-sm text-gray-500">
+            Necesitas una cuenta para finalizar la compra. Como socio obtienes
+            un <span className="font-semibold text-primary">10% de descuento</span>.
+          </p>
+        )}
       </section>
     </div>
   );

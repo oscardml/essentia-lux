@@ -9,6 +9,7 @@ import Navbar from "@/components/navbar";
 import Header from "@/components/header";
 import Footer from "@/components/Footer";
 import { CartProvider } from "@/lib/cart-context";
+import { AuthProvider } from "@/lib/auth-context";
 import type { Metadata } from "next";
 
 const urbanist = Urbanist({
@@ -246,6 +247,7 @@ export default function RootLayout({
           disableTransitionOnChange={false}
           storageKey="essentia-theme"
         >
+          <AuthProvider>
           <CartProvider>
             <Header />
             <Navbar />
@@ -261,6 +263,7 @@ export default function RootLayout({
             </main>
             <Footer />
           </CartProvider>
+          </AuthProvider>
         </ThemeProvider>
         
       </body>

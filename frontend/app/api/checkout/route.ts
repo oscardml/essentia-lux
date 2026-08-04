@@ -20,6 +20,16 @@ export async function POST(request: Request) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // La interfaz ya pide iniciar sesión antes de comprar, pero eso solo es una
+  // barrera visual: sin esta comprobación cualquiera podría llamar a este
+  // endpoint directamente y generar pedidos anónimos.
+  if (!user) {
+    return NextResponse.json(
+      { error: "Debes iniciar sesión para completar la compra." },
+      { status: 401 }
+    );
+  }
+
   const admin = createAdminClient();
 
   // Revalidar precios y stock en el servidor: nunca confiar en el cliente.

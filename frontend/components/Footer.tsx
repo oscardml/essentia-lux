@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { socialNetworks } from '@/data';
 
 const Footer = () => {
   // Número de teléfono y mensaje predeterminado para WhatsApp
@@ -105,6 +106,29 @@ const Footer = () => {
                 info@essluxam.com
               </a>
             </div>
+          </div>
+        </div>
+
+        {/* Redes sociales */}
+        <div className="flex flex-col items-center gap-3 mb-8 sm:mb-10">
+          <p className="text-sm sm:text-base text-gray-600 font-medium">
+            Síguenos
+          </p>
+          <div className="flex items-center justify-center gap-3 sm:gap-4">
+            {socialNetworks.map(({ id, name, logo, src }) => (
+              <a
+                key={id}
+                href={src}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visítanos en ${name}`}
+                className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-white/40 backdrop-blur-md border border-white/30 text-gray-600 hover:text-primary hover:border-primary/40 hover:scale-110 transition-all duration-300 shadow-sm hover:shadow-md"
+              >
+                <span className="text-xl sm:text-2xl flex items-center justify-center">
+                  {logo}
+                </span>
+              </a>
+            ))}
           </div>
         </div>
 

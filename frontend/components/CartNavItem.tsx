@@ -3,9 +3,15 @@
 import Link from "next/link";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "@/lib/cart-context";
+import { useAuth } from "@/lib/auth-context";
 
 export default function CartNavItem() {
   const { totalItems } = useCart();
+  const { user, loaded } = useAuth();
+
+  // El carrito solo tiene sentido para quien puede comprar, y comprar exige
+  // cuenta (para el descuento de socio y el historial de pedidos).
+  if (!loaded || !user) return null;
 
   return (
     <Link

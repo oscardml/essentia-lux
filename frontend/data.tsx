@@ -55,18 +55,21 @@ export const parrafosInicio: string[] = [
 export const socialNetworks = [
   {
     id: 1,
+    name: "WhatsApp",
     logo: <FaWhatsapp size={36} />,
-    src: "https://wa.me/34691589789", // Reemplaza con tu número real
+    src: "https://wa.me/34691589789",
   },
   {
     id: 2,
+    name: "Instagram",
     logo: <FaInstagram size={36} />,
-    src: "https://www.instagram.com/essentialux_am", // Reemplaza con tu usuario real
+    src: "https://www.instagram.com/essentialux_am",
   },
   {
     id: 3,
+    name: "LinkedIn",
     logo: <FaLinkedin size={36} />,
-    src: "https://linkedin.com/in/dracatalinatenjo", // Reemplaza con tu perfil real
+    src: "https://linkedin.com/in/dracatalinatenjo",
   },
 ];
 

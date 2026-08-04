@@ -2,21 +2,33 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { FaShoppingCart, FaCheck } from "react-icons/fa";
+import { FaShoppingCart, FaCheck, FaSignInAlt } from "react-icons/fa";
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
+import { useAuth } from "@/lib/auth-context";
 import type { Product } from "@/types/product";
 import { formatPrice, formatProductName } from "@/types/product";
 
 export default function ProductCard({ product }: { product: Product }) {
+  const router = useRouter();
   const { addItem } = useCart();
+  const { user, loaded } = useAuth();
   const [added, setAdded] = useState(false);
   const agotado = product.stock <= 0;
   const title = formatProductName(product.name);
 
   const handleComprar = () => {
     if (agotado) return;
+
+    // Comprar exige cuenta: así se aplica el descuento de socio y el pedido
+    // queda asociado a alguien a quien poder avisar del envío.
+    if (!user) {
+      router.push(`/login?redirectTo=/tienda/${product.slug}`);
+      return;
+    }
+
     addItem({
       productId: product.id,
       slug: product.slug,
@@ -159,6 +171,11 @@ export default function ProductCard({ product }: { product: Product }) {
                 <>
                   <FaCheck className="text-base" />
                   Añadido al carrito
+                </>
+              ) : loaded && !user ? (
+                <>
+                  <FaSignInAlt className="text-base" />
+                  Inicia sesión para comprar
                 </>
               ) : (
                 <>
