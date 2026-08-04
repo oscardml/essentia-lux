@@ -1,9 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
-import ProductCard from "@/components/ProductCard";
+import TiendaGrid from "@/components/TiendaGrid";
 import type { Product } from "@/types/product";
 
 export const metadata = {
   title: "Tienda",
+  description:
+    "Cosmética profesional seleccionada por el equipo médico de Essentia Lux. Compra online con envío a domicilio.",
 };
 
 export const revalidate = 60;
@@ -25,27 +27,22 @@ export default async function TiendaPage() {
   }
 
   return (
-    <div>
-      <div className="text-center mb-10">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
-          Tienda
+    <div className="pt-4">
+      <div className="text-center mb-8 sm:mb-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-4 text-secondary">
+          Nuestra Tienda
         </h1>
-        <p className="text-gray-600 mt-2">
-          Cosmética seleccionada por nuestro equipo médico
+        <p className="text-primary font-medium text-base sm:text-lg md:text-xl">
+          ✨ Productos de alta calidad para el cuidado diario ✨
+        </p>
+        <p className="text-gray-600 text-sm sm:text-base mt-2">
+          Nuestra línea exclusiva de cosmética profesional, con envío a domicilio
         </p>
       </div>
 
-      {!products || products.length === 0 ? (
-        <p className="text-center text-gray-500">
-          Todavía no hay productos disponibles. Vuelve pronto.
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      )}
+      <TiendaGrid products={products ?? []} />
+
+      <div className="h-12 sm:h-16" />
     </div>
   );
 }

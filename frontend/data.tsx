@@ -1,4 +1,4 @@
-import { CodeSquare, HomeIcon, User2, MessageSquare, Star, ShoppingBag } from "lucide-react";
+import { CodeSquare, HomeIcon, User2, Star, ShoppingBag } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { STORE_ENABLED } from "@/config/features";
 
@@ -27,12 +27,8 @@ export const itemsNavbar = [
     icon: <Star size={25} color="#4A4A4A" strokeWidth={1} />,
     link: "/resenas",
   },
-  {
-    id: 5,
-    title: "Separar Cita",
-    icon: <MessageSquare size={25} color="#4A4A4A" strokeWidth={1} />,
-    link: "/separar-cita",
-  },
+  // "Reservar Cita" ya no vive en el menú: se llega a ella desde el botón
+  // "Reservar Cita" de cada servicio, que es donde el usuario decide de verdad.
   // La entrada "Tienda" solo aparece cuando STORE_ENABLED está activo.
   ...(STORE_ENABLED
     ? [

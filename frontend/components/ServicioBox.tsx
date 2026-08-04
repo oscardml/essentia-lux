@@ -148,7 +148,7 @@ const ServicioBox = ({ data }: ServicioBoxProps) => {
 
           {/* Botones de acción - mejorados para móvil */}
           <div className="flex flex-col gap-3">
-            {/* Botón principal - Separar Cita */}
+            {/* Botón principal - Reservar Cita */}
             <Link href="/separar-cita" className="w-full">
               <motion.div
                 className="w-full bg-gradient-to-r from-secondary to-primary text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold text-center shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group/btn text-base sm:text-lg"
@@ -156,7 +156,7 @@ const ServicioBox = ({ data }: ServicioBoxProps) => {
                 whileTap={{ scale: 0.98 }}
               >
                 <FaCalendarAlt className="text-sm sm:text-base group-hover/btn:animate-bounce" />
-                <span>Separar Cita</span>
+                <span>Reservar Cita</span>
                 <motion.div
                   animate={isHovered ? { x: 5 } : { x: 0 }}
                   transition={{ duration: 0.2 }}

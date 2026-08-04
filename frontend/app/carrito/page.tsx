@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
-import { formatPrice } from "@/types/product";
+import { formatPrice, formatProductName } from "@/types/product";
 
 export default function CarritoPage() {
   const { items, updateQuantity, removeItem, totalCents } = useCart();
@@ -77,7 +77,9 @@ export default function CarritoPage() {
             </div>
 
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-gray-900 truncate">{item.name}</p>
+              <p className="font-semibold text-gray-900 truncate">
+                {formatProductName(item.name)}
+              </p>
               <p className="text-secondary text-sm font-medium">
                 {formatPrice(item.price_cents, item.currency)}
               </p>
