@@ -100,6 +100,10 @@ create table if not exists public.orders (
   created_at                 timestamptz not null default now()
 );
 
+-- Código de descuento usado en el pedido (null si no se aplicó ninguno).
+alter table public.orders
+  add column if not exists discount_code text;
+
 create table if not exists public.order_items (
   id               uuid primary key default gen_random_uuid(),
   order_id         uuid not null references public.orders(id) on delete cascade,

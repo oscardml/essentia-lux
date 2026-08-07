@@ -4,8 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FaTag } from "react-icons/fa";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
+import { findDiscountCode } from "@/config/discounts";
 import { formatPrice, formatProductName } from "@/types/product";
 
 export default function CarritoPage() {
@@ -14,6 +16,36 @@ export default function CarritoPage() {
   const { user, loaded } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [codeInput, setCodeInput] = useState("");
+  const [codeError, setCodeError] = useState<string | null>(null);
+  const [appliedCode, setAppliedCode] = useState<{
+    code: string;
+    percent: number;
+  } | null>(null);
+
+  // El importe final lo vuelve a calcular el servidor; esto es solo la
+  // previsualización para que el cliente vea lo que va a pagar.
+  const discountCents = appliedCode
+    ? Math.round((totalCents * appliedCode.percent) / 100)
+    : 0;
+  const finalCents = totalCents - discountCents;
+
+  const handleApplyCode = () => {
+    setCodeError(null);
+    const discount = findDiscountCode(codeInput);
+
+    if (!discount) {
+      setCodeError("Ese código no es válido.");
+      return;
+    }
+    if (discount.requiereCuenta && !user) {
+      setCodeError("Necesitas iniciar sesión para usar este código.");
+      return;
+    }
+
+    setAppliedCode({ code: discount.code, percent: discount.percent });
+    setCodeInput("");
+  };
 
   const handleCheckout = async () => {
     if (!user) {
@@ -33,6 +65,7 @@ export default function CarritoPage() {
             productId: i.productId,
             quantity: i.quantity,
           })),
+          discountCode: appliedCode?.code,
         }),
       });
 
@@ -123,9 +156,80 @@ export default function CarritoPage() {
       </section>
 
       <section className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-4">
-        <div className="flex items-center justify-between text-lg font-bold text-gray-900">
-          <span>Total</span>
-          <span>{formatPrice(totalCents, "eur")}</span>
+        {/* Código de descuento */}
+        <div className="space-y-2">
+          <label
+            htmlFor="codigo"
+            className="block text-sm font-semibold text-gray-700"
+          >
+            ¿Tienes un código de descuento?
+          </label>
+
+          {appliedCode ? (
+            <div className="flex items-center justify-between gap-3 rounded-xl border-2 border-primary/30 bg-primary/5 px-4 py-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <FaTag className="text-primary flex-shrink-0" />
+                <span className="font-semibold text-primary truncate">
+                  {appliedCode.code}
+                </span>
+                <span className="text-sm text-gray-600 whitespace-nowrap">
+                  −{appliedCode.percent}%
+                </span>
+              </div>
+              <button
+                onClick={() => setAppliedCode(null)}
+                className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors"
+              >
+                Quitar
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <input
+                id="codigo"
+                type="text"
+                value={codeInput}
+                onChange={(e) => {
+                  setCodeInput(e.target.value);
+                  setCodeError(null);
+                }}
+                onKeyDown={(e) => e.key === "Enter" && handleApplyCode()}
+                placeholder="Introduce tu código"
+                className="flex-1 min-w-0 p-3 border-2 border-gray-200 rounded-xl bg-gray-50 text-black uppercase placeholder:normal-case focus:border-[#6A806C] focus:bg-white transition-all duration-200 outline-none"
+              />
+              <button
+                onClick={handleApplyCode}
+                disabled={!codeInput.trim()}
+                className="px-5 rounded-xl bg-primary text-white font-semibold hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+              >
+                Aplicar
+              </button>
+            </div>
+          )}
+
+          {codeError && (
+            <p className="text-red-600 text-sm font-medium">{codeError}</p>
+          )}
+        </div>
+
+        {/* Desglose */}
+        <div className="space-y-2 pt-2 border-t border-gray-100">
+          <div className="flex items-center justify-between text-sm text-gray-600">
+            <span>Subtotal</span>
+            <span>{formatPrice(totalCents, "eur")}</span>
+          </div>
+
+          {appliedCode && (
+            <div className="flex items-center justify-between text-sm font-medium text-primary">
+              <span>Descuento ({appliedCode.code})</span>
+              <span>−{formatPrice(discountCents, "eur")}</span>
+            </div>
+          )}
+
+          <div className="flex items-center justify-between text-lg font-bold text-gray-900 pt-2 border-t border-gray-100">
+            <span>Total</span>
+            <span>{formatPrice(finalCents, "eur")}</span>
+          </div>
         </div>
 
         {error && <p className="text-red-600 text-sm font-medium">{error}</p>}
@@ -133,7 +237,7 @@ export default function CarritoPage() {
         <button
           onClick={handleCheckout}
           disabled={loading}
-          className="w-full bg-gradient-to-r from-[#6A806C] to-[#AF7E44] text-white py-4 px-8 rounded-xl font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          className="w-full bg-primary hover:bg-primary/90 text-white py-4 px-8 rounded-xl font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
         >
           {loading
             ? "Redirigiendo al pago..."
@@ -144,8 +248,7 @@ export default function CarritoPage() {
 
         {loaded && !user && (
           <p className="text-center text-sm text-gray-500">
-            Necesitas una cuenta para finalizar la compra. Como socio obtienes
-            un <span className="font-semibold text-primary">10% de descuento</span>.
+            Necesitas una cuenta para finalizar la compra.
           </p>
         )}
       </section>

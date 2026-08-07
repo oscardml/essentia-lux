@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { findDiscountCode } from "@/config/discounts";
 
 interface CheckoutItem {
   productId: string;
@@ -9,7 +10,10 @@ interface CheckoutItem {
 }
 
 export async function POST(request: Request) {
-  const { items } = (await request.json()) as { items: CheckoutItem[] };
+  const { items, discountCode } = (await request.json()) as {
+    items: CheckoutItem[];
+    discountCode?: string;
+  };
 
   if (!items || items.length === 0) {
     return NextResponse.json({ error: "El carrito está vacío." }, { status: 400 });
@@ -43,14 +47,39 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Alguno de los productos ya no existe." }, { status: 400 });
   }
 
+  // El descuento ya no es automático: hay que introducir un código válido.
+  // Se revalida aquí porque el porcentaje que llegue del navegador no es
+  // de fiar (cualquiera podría enviar un 90%).
   let discountPercent = 0;
-  if (user) {
-    const { data: profile } = await admin
-      .from("profiles")
-      .select("member_discount_percent, is_member")
-      .eq("id", user.id)
-      .single();
-    if (profile?.is_member) discountPercent = profile.member_discount_percent;
+  let appliedCode: string | null = null;
+
+  if (discountCode) {
+    const discount = findDiscountCode(discountCode);
+
+    if (!discount) {
+      return NextResponse.json(
+        { error: "El código de descuento no es válido." },
+        { status: 400 }
+      );
+    }
+
+    if (discount.requiereCuenta) {
+      const { data: profile } = await admin
+        .from("profiles")
+        .select("is_member")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile?.is_member) {
+        return NextResponse.json(
+          { error: "Este código es exclusivo para socios." },
+          { status: 400 }
+        );
+      }
+    }
+
+    discountPercent = discount.percent;
+    appliedCode = discount.code;
   }
 
   const lineItems: {
@@ -100,6 +129,7 @@ export async function POST(request: Request) {
       total_cents: totalCents,
       currency,
       customer_email: user?.email ?? null,
+      discount_code: appliedCode,
     })
     .select()
     .single();
@@ -138,7 +168,7 @@ export async function POST(request: Request) {
     quantity: i.quantity,
   }));
 
-  // El descuento de socio se aplica como un cupón de importe fijo sobre el total.
+  // El descuento se aplica como un cupón de importe fijo sobre el total.
   const discounts = discountCents > 0
     ? [
         {
@@ -147,7 +177,7 @@ export async function POST(request: Request) {
               amount_off: discountCents,
               currency,
               duration: "once",
-              name: `Descuento de socio (${discountPercent}%)`,
+              name: `${appliedCode} (-${discountPercent}%)`,
             })
           ).id,
         },

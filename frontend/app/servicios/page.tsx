@@ -152,7 +152,7 @@ const combos = [
   },
   {
     file: "/Carboxiterapia corporal.jpg",
-    title: "pack carboxi glow",
+    title: "Carboxi Glow",
     description: "5 Sesiones de Carboxiterapia facial, asesoramiento personalizado y fórmula magistral.",
     price: ""
   },
@@ -172,24 +172,6 @@ const combos = [
     file: "/Essentia Fresh.jpg",
     title: "Essentia Fresh",
     description: "1 Sesión de Mesoterapia facial (Skin firm ang lift), 1 sesión con Neuromodulador, asesoramiento personalizado de fórmula magistral.",
-    price: ""
-  },
-  {
-    file: "/Radiofrecuencia facial.jpeg",
-    title: "Ritual Lux Lift",
-    description: "5 Sesiones de Radiofrecuencia facial.",
-    price: ""
-  },
-  {
-    file: "/Cavitación.jpg",
-    title: "Método Reductor Essentia",
-    description: "10 Sesiones de Cavitación.",
-    price: ""
-  },
-  {
-    file: "/Lipoláser.jpg",
-    title: "Tratamiento Lux Shape",
-    description: "10 Sesiones de Lipolaser.",
     price: ""
   },
   {

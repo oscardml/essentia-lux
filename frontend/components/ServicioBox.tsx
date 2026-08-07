@@ -151,7 +151,7 @@ const ServicioBox = ({ data }: ServicioBoxProps) => {
             {/* Botón principal - Reservar Cita */}
             <Link href="/separar-cita" className="w-full">
               <motion.div
-                className="w-full bg-gradient-to-r from-secondary to-primary text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold text-center shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group/btn text-base sm:text-lg"
+                className="w-full bg-primary hover:bg-primary/90 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold text-center shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group/btn text-base sm:text-lg"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

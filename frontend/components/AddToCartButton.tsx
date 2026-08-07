@@ -42,9 +42,8 @@ export default function AddToCartButton({ product }: { product: Product }) {
           Inicia sesión para comprar
         </button>
         <p className="text-center text-sm text-gray-500">
-          Al registrarte obtienes un{" "}
-          <span className="font-semibold text-primary">10% de descuento</span>{" "}
-          como socio y el seguimiento de tus pedidos.
+          Con tu cuenta puedes usar códigos de descuento y seguir el estado de
+          tus pedidos.
         </p>
       </div>
     );
