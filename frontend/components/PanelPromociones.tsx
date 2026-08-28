@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaArrowRight, FaGift, FaStar, FaRegClock } from "react-icons/fa";
+import { FaArrowRight, FaStar, FaRegClock } from "react-icons/fa";
 import { promociones } from "@/data";
 
 const INTERVALO_MS = 6000;
@@ -40,26 +40,24 @@ export default function PanelPromociones() {
         <div className="h-1.5 w-full bg-gradient-to-r from-secondary via-primary to-secondary" />
 
         <div className="p-6 sm:p-8 md:p-10">
-          {/* La cabecera cambia con la promoción: las destacadas del mes
-              llevan su propio rótulo. */}
+          {/* Solo las promociones destacadas del mes llevan rótulo; las
+              demás van directas al título. */}
           <AnimatePresence mode="wait">
-            <motion.div
-              key={`cab-${promo.id}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center justify-center gap-2 mb-4"
-            >
-              {promo.cabecera ? (
+            {promo.cabecera && (
+              <motion.div
+                key={`cab-${promo.id}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="flex items-center justify-center gap-2 mb-4"
+              >
                 <FaStar className="text-primary" />
-              ) : (
-                <FaGift className="text-primary" />
-              )}
-              <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary">
-                {promo.cabecera ?? "Promociones"}
-              </span>
-            </motion.div>
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary">
+                  {promo.cabecera}
+                </span>
+              </motion.div>
+            )}
           </AnimatePresence>
 
           {/* Las promociones tienen alturas muy distintas (la del mes lleva
@@ -79,13 +77,28 @@ export default function PanelPromociones() {
                 transition={{ duration: 0.35, ease: "easeOut" }}
                 className="text-center w-full"
               >
-                <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
-                  {promo.etiqueta}
-                </span>
+                {/* En la promoción del mes la etiqueta va arriba, bajo su
+                    rótulo. En las demás va debajo del título, que además se
+                    pinta en dorado al no llevar rótulo encima. */}
+                {promo.cabecera && (
+                  <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+                    {promo.etiqueta}
+                  </span>
+                )}
 
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 leading-tight">
+                <h3
+                  className={`text-xl sm:text-2xl md:text-3xl font-bold mb-3 leading-tight ${
+                    promo.cabecera ? "text-gray-800" : "text-primary"
+                  }`}
+                >
                   {promo.titulo}
                 </h3>
+
+                {!promo.cabecera && (
+                  <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4">
+                    {promo.etiqueta}
+                  </span>
+                )}
 
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-xl mx-auto mb-5">
                   {promo.descripcion}
@@ -110,11 +123,15 @@ export default function PanelPromociones() {
                   </div>
                 )}
 
+                {/* El aviso necesita su propio bloque: siendo inline-flex se
+                    colocaba en la misma línea que el botón y se solapaban. */}
                 {promo.aviso && (
-                  <p className="inline-flex items-center gap-2 text-sm font-semibold text-secondary mb-5">
-                    <FaRegClock />
-                    {promo.aviso}
-                  </p>
+                  <div className="mb-5">
+                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-secondary">
+                      <FaRegClock />
+                      {promo.aviso}
+                    </span>
+                  </div>
                 )}
 
                 <Link
