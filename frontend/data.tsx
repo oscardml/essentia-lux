@@ -43,15 +43,38 @@ export const itemsNavbar = [
 // Promociones del panel animado de la página de inicio.
 // Para cambiar la promoción basta con editar esta lista: el panel las va
 // rotando solo y se adapta a cuántas haya.
-export const promociones = [
+//
+// Campos opcionales:
+//   cabecera → título del panel ("Promociones" si no se indica).
+//   ofertas  → lista de tratamientos con precio, en bloque destacado.
+//   aviso    → línea de urgencia bajo las ofertas.
+export interface Promocion {
+  id: string;
+  etiqueta: string;
+  titulo: string;
+  descripcion: string;
+  cta: string;
+  link: string;
+  cabecera?: string;
+  ofertas?: { nombre: string; precio: string }[];
+  aviso?: string;
+}
+
+export const promociones: Promocion[] = [
   {
-    id: "socios",
-    etiqueta: "Solo para socios",
-    titulo: "10% de descuento en la tienda",
+    id: "octubre",
+    cabecera: "Especial del mes",
+    etiqueta: "Octubre",
+    titulo: "Después del verano, tu piel necesita un extra de cuidado",
     descripcion:
-      "Crea tu cuenta y usa el código ESSENTIA10 en el carrito para ahorrar en toda nuestra cosmética profesional.",
-    cta: "Ir a la tienda",
-    link: "/tienda",
+      "Es el momento perfecto para oxigenar, renovar y devolver luminosidad a tu piel, eliminando las células muertas acumuladas durante el verano.",
+    ofertas: [
+      { nombre: "Hydrafacial + Peeling químico", precio: "100 €" },
+      { nombre: "Hydrafacial + Dermapen", precio: "100 €" },
+    ],
+    aviso: "Plazas limitadas",
+    cta: "Agenda tu cita de octubre",
+    link: "/separar-cita",
   },
   {
     id: "valoracion",
