@@ -1,26 +1,10 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { parrafosInicio, introductionData } from '@/data'
+import Link from 'next/link'
+import { introductionData } from '@/data'
 import { MotionTransition } from '@/components/transition-component'
-import { TypeAnimation } from 'react-type-animation'
+import PanelPromociones from '@/components/PanelPromociones'
 
 export default function Home() {
-  const [mensaje, setMensaje] = useState('Estamos preparando tu experiencia...')
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    fetch('https://essentialux-1.onrender.com/')
-      .then((res) => res.json())
-      .then((data) => {
-        setMensaje(data.message)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        setMensaje('Error al conectar con el backend')
-        setIsLoading(false)
-      })
-  }, [])
-
   return (
     <div className="relative w-full min-h-screen overflow-hidden pb-16 pt-24 lg:pt-24 bg-white">
       
@@ -88,84 +72,42 @@ export default function Home() {
           </p>
         </MotionTransition>
 
-        {/* Bloque central con glassmorphism minimalista */}
+        {/* Presentación del centro */}
         <MotionTransition
           position="bottom"
           className="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl"
         >
           <div className="relative group">
-            {/* Glow effect sutil - AGRANDADO */}
+            {/* Glow effect sutil */}
             <div className="absolute -inset-6 bg-gradient-to-r from-primary via-gray-300 to-primary rounded-3xl blur-2xl opacity-10 group-hover:opacity-20 transition-all duration-1000"></div>
-            
-            {/* Contenido principal - fondo blanco sólido */}
-            <div className="relative bg-white shadow-elegant-lg rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 text-center space-y-6 sm:space-y-8 border border-gray-200 overflow-hidden">
-              
+
+            <div className="relative bg-white shadow-elegant-lg rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 text-center border border-gray-200 overflow-hidden">
               {/* Decoración interna minimalista */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/5 to-transparent rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-gray-100/30 to-transparent rounded-full translate-y-12 -translate-x-12 opacity-50"></div>
-              
-              {/* Contenido */}
-              <div className="relative z-10">
-                {isLoading ? (
-                  <div className="flex flex-col items-center space-y-4">
-                    {/* Skeleton loader elegante */}
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 bg-gradient-to-r from-primary to-[#6A806C] rounded-full animate-bounce"></div>
-                      <div className="w-3 h-3 bg-gradient-to-r from-gray-400 to-primary rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                      <div className="w-3 h-3 bg-gradient-to-r from-primary to-[#6A806C] rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                    </div>
-                    <p className="text-gray-600 text-lg sm:text-xl md:text-2xl animate-pulse font-medium">
-                      {mensaje}
-                    </p>
-                  </div>
-                ) : mensaje && !mensaje.startsWith('Error') ? (
-                  <div className="space-y-6 sm:space-y-8">
-                    {parrafosInicio.map((linea, i) => (
-                      <div key={i} className="relative">
-                        <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-primary to-gray-300 rounded-full opacity-25"></div>
-                        <p className="text-gray-700 text-lg sm:text-xl md:text-2xl lg:text-xl xl:text-2xl leading-relaxed font-medium tracking-wide pl-6">
-                          {linea}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center space-x-3 text-red-500">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                    <p className="text-lg sm:text-xl md:text-2xl lg:text-xl xl:text-2xl font-medium">
-                      {mensaje}
-                    </p>
-                  </div>
-                )}
+
+              <div className="relative z-10 space-y-6">
+                <p className="text-gray-700 text-base sm:text-lg md:text-xl lg:text-xl leading-relaxed font-medium tracking-wide text-pretty">
+                  {introductionData.descripcion}
+                </p>
+
+                <Link
+                  href="/sobre-nosotros"
+                  className="group/link inline-flex items-center gap-2 font-semibold text-primary hover:text-primary/80 transition-colors duration-300"
+                >
+                  Conoce nuestro centro
+                  <span className="transition-transform duration-300 group-hover/link:translate-x-1">
+                    →
+                  </span>
+                </Link>
               </div>
             </div>
           </div>
         </MotionTransition>
 
-        {/* Animación de texto con estilo mejorado */}
-        <MotionTransition position="bottom">
-          <div className="text-center px-4 sm:px-6 max-w-4xl mx-auto">
-            <div className="relative inline-block">
-              {/* Fondo decorativo sutil */}
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-gray-50 to-primary/5 blur-xl rounded-2xl opacity-60"></div>
-              
-              <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 border border-gray-200 shadow-elegant">
-                <TypeAnimation
-                  key={introductionData.tituloPrincipal}
-                  sequence={introductionData.frases.flatMap((frase: string) => [frase, 2000])}
-                  wrapper="span"
-                  speed={50}
-                  repeat={Infinity}
-                  className="font-black bg-gradient-to-r from-primary via-[#6A806C] to-primary bg-clip-text text-transparent text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl leading-tight tracking-wide"
-                />
-                
-                {/* Cursor personalizado */}
-                <span className="inline-block w-1 h-10 sm:h-12 md:h-14 bg-gradient-to-b from-primary to-[#6A806C] ml-1 animate-pulse rounded-full"></span>
-              </div>
-            </div>
-          </div>
+        {/* Panel de promociones animado */}
+        <MotionTransition position="bottom" className="w-full">
+          <PanelPromociones />
         </MotionTransition>
 
         {/* Floating elements decorativos minimalistas */}

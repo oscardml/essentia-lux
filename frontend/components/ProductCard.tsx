@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
 import type { Product } from "@/types/product";
-import { formatPrice, formatProductName } from "@/types/product";
+import { formatPrice, formatProductName, formatCategory } from "@/types/product";
 
 export default function ProductCard({ product }: { product: Product }) {
   const router = useRouter();
@@ -79,8 +79,8 @@ export default function ProductCard({ product }: { product: Product }) {
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, duration: 0.3, type: "spring" }}
             >
-              <span className="text-[10px] sm:text-xs font-medium text-primary lowercase first-letter:uppercase">
-                {product.category.toLowerCase()}
+              <span className="text-[10px] sm:text-xs font-medium text-primary">
+                {formatCategory(product.category)}
               </span>
             </motion.div>
           )}

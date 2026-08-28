@@ -1,4 +1,4 @@
-import { CodeSquare, HomeIcon, User2, Star, ShoppingBag } from "lucide-react";
+import { CodeSquare, HomeIcon, Star, ShoppingBag } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { STORE_ENABLED } from "@/config/features";
 
@@ -9,12 +9,9 @@ export const itemsNavbar = [
     icon: <HomeIcon size={25} color="#4A4A4A" strokeWidth={1} />,
     link: "/",
   },
-  {
-    id: 2,
-    title: "Sobre Nosotros",
-    icon: <User2 size={25} color="#4A4A4A" strokeWidth={1} />,
-    link: "/sobre-nosotros",
-  },
+  // "Sobre Nosotros" ya no está en el menú: su texto de presentación abre
+  // ahora la página de inicio. La página sigue existiendo (equipo, mapa,
+  // horarios) y se enlaza desde ahí.
   {
     id: 3,
     title: "Servicios",
@@ -43,10 +40,37 @@ export const itemsNavbar = [
 ];
 
 // data/data.ts
-export const parrafosInicio: string[] = [
-  "Somos tu servicio de medicina estética en Santander.",
-  "Nos especializamos en resaltar tu belleza natural con tratamientos personalizados y tecnología de vanguardia.",
-  "Da el primer paso hacia tu bienestar: reserva una cita, explora nuestros servicios y lee las opiniones de quienes ya confían en nosotros."
+// Promociones del panel animado de la página de inicio.
+// Para cambiar la promoción basta con editar esta lista: el panel las va
+// rotando solo y se adapta a cuántas haya.
+export const promociones = [
+  {
+    id: "socios",
+    etiqueta: "Solo para socios",
+    titulo: "10% de descuento en la tienda",
+    descripcion:
+      "Crea tu cuenta y usa el código ESSENTIA10 en el carrito para ahorrar en toda nuestra cosmética profesional.",
+    cta: "Ir a la tienda",
+    link: "/tienda",
+  },
+  {
+    id: "valoracion",
+    etiqueta: "Primera visita",
+    titulo: "Valoración diagnóstica gratuita",
+    descripcion:
+      "Analizamos tu piel y diseñamos un plan a tu medida. Sin coste si realizas cualquier procedimiento con nosotros.",
+    cta: "Reservar cita",
+    link: "/separar-cita",
+  },
+  {
+    id: "packs",
+    etiqueta: "Paquetes especiales",
+    titulo: "Combina tratamientos y ahorra",
+    descripcion:
+      "Programas completos como Sculpt Lux o Regenera Lux, diseñados para lograr resultados óptimos con precios especiales.",
+    cta: "Ver paquetes",
+    link: "/servicios",
+  },
 ];
 // data.ts o data.tsx
 

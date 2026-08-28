@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeIn } from "@/utils/motion-transitions";
 
@@ -10,15 +9,12 @@ export type MotionTransitionProps = {
   position: "right" | "bottom";
 };
 
+// Antes este componente devolvía null en el servidor, así que todo lo que
+// envolvía (incluida la portada entera) llegaba vacío a Google y a cualquier
+// cliente sin JavaScript. framer-motion renderiza bien en servidor, así que
+// se deja que pinte el contenido y solo la animación ocurra en el navegador.
 export function MotionTransition(props: MotionTransitionProps) {
   const { children, className, position } = props;
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) return null; // ⛔ evita render en el servidor
 
   return (
     <motion.div
