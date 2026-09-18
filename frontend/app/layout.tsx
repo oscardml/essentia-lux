@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.essluxam.com"),
   
   title: {
-    default: "Essentia Lux - Medicina Estética en Santander | Tratamientos Faciales y Corporales",
-    template: "%s | Essentia Lux"
+    default: "Essentia Lux 10 - Medicina Estética en Santander | Tratamientos Faciales y Corporales",
+    template: "%s | Essentia Lux 10"
   },
   description: "Centro de medicina estética en Santander. Tratamientos faciales, corporales y capilares con tecnología avanzada. Rellenos, botox, mesoterapia, peeling y más. ¡Agenda tu cita!",
   keywords: [
