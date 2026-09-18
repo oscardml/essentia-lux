@@ -59,10 +59,10 @@ export default function Home() {
           </div>
 
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-black bg-gradient-to-r from-[#6A806C] via-[#AF7E44] to-[#6A806C] bg-clip-text text-transparent leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-black text-[#AF7E44] leading-tight">
               Essentia Lux
             </h1>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-[#AF7E44] via-[#6A806C] to-[#AF7E44] bg-clip-text text-transparent leading-tight mt-1">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-[#6A806C] leading-tight mt-1">
               Aesthetic Medicine
             </h2>
           </div>
