@@ -76,15 +76,7 @@ export const promociones: Promocion[] = [
     cta: "Agenda tu cita de octubre",
     link: "/separar-cita",
   },
-  {
-    id: "valoracion",
-    etiqueta: "Primera visita",
-    titulo: "Valoración diagnóstica gratuita",
-    descripcion:
-      "Analizamos tu piel y diseñamos un plan a tu medida. Sin coste si realizas cualquier procedimiento con nosotros.",
-    cta: "Reservar cita",
-    link: "/separar-cita",
-  },
+
   {
     id: "packs",
     etiqueta: "Paquetes especiales",
