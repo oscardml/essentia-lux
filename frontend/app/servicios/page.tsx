@@ -89,25 +89,25 @@ const servicios = [
   },
   {
     file: "/Infiltración de toxina botulínica para bruxismo.jpg",
-    title: "Infiltración de toxina botulínica para bruxismo",
+    title: "Infiltración de toxina botulínica para el tratamiento del bruxismo",
     description: "El neuromodulador se infiltra en los músculos maseteros para disminuir la tensión y el desgaste dental, aliviar el dolor y estilizar el tercio inferior del rostro.",
     price: ""
   },
   {
     file: "/Infiltración de toxina botulínica para hiperhidrosis.jpg",
-    title: "Infiltración de toxina botulínica para hiperhidrosis",
+    title: "Infiltración de toxina botulínica para el tratamiento de la hiperhidrosis",
     description: "El neuromodulador se aplica en axilas, manos, pies u otras zonas con sudoración excesiva para bloquear de forma temporal la actividad de las glándulas sudoríparas, logrando una reducción significativa de la sudoración.",
     price: ""
   },
   {
     file: "/Rinomodelación.png",
-    title: "Rinomodelación",
+    title: "Rinomodelación con ácido hialurónico",
     description: "Este tratamiento se utiliza para armonizar el perfil nasal, disimular irregularidades, levantar ligeramente la punta o suavizar el dorso, logrando un aspecto más equilibrado y natural del rostro.",
     price: ""
   },
   {
     file: "/Crioterapia.jpg",
-    title: "Crioterapia",
+    title: "Criolipólisis",
     description: "Es un procedimiento seguro, no invasivo, que permite mejorar la silueta corporal, textura cutánea y firmeza sin cirugía.",
     price: ""
   },
@@ -140,13 +140,13 @@ const servicios = [
 const combos = [
   {
     file: "/Sculpt Lux.png",
-    title: "Sculpt Lux",
+    title: "Remodela tu figura con Sculpt Lux",
     description: "1 Sesión de crioterapia, 2 sesiones radiofrecuencia corporal, 1 cavitación, protocolo lipolítico, 10 sesiones de mesoterapia, asesoramiento personalizado y seguimientos.",
     price: ""
   },
   {
     file: "/Renova Lux capilar.jpg",
-    title: "Renova Lux capilar",
+    title: "Trata la alopecia y evita la pérdida de tu cabello con Renova Lux capilar",
     description: "6 Sesiones de Mesoterapia capilar, 2 sesiones PRP capilar, asesoramiento para tratamiento oral y tópico.",
     price: ""
   },
@@ -211,7 +211,7 @@ export default function ServiciosPage() {
                 onClick={() => setSeccionActiva('servicios')}
                 className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base ${
                   seccionActiva === 'servicios'
-                    ? 'bg-gradient-to-r from-secondary to-primary text-white shadow-lg transform scale-105'
+                    ? 'bg-[#6A806C] text-white shadow-lg transform scale-105'
                     : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
                 }`}
               >
@@ -222,7 +222,7 @@ export default function ServiciosPage() {
                 onClick={() => setSeccionActiva('combos')}
                 className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base ${
                   seccionActiva === 'combos'
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg transform scale-105'
+                    ? 'bg-[#AF7E44] text-white shadow-lg transform scale-105'
                     : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
                 }`}
               >
@@ -241,7 +241,7 @@ export default function ServiciosPage() {
                 className="group inline-flex items-center gap-2 rounded-full border border-primary/30 bg-white/70 px-5 py-2.5 text-sm font-medium text-primary shadow-sm backdrop-blur-md transition-all duration-300 hover:border-primary hover:shadow-md"
               >
                 <FaFlask className="text-xs" />
-                <span>¿Buscas nuestros productos? Visita la tienda</span>
+                <span>¿Buscas nuestros productos dermocosméticos? Visita nuestra tienda</span>
                 <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>

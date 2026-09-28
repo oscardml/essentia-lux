@@ -5,7 +5,7 @@ import type { Product } from "@/types/product";
 export const metadata = {
   title: "Tienda",
   description:
-    "Cosmética profesional seleccionada por el equipo médico de Essentia Lux. Compra online con envío a domicilio.",
+    "Nuestra tienda en línea exclusiva en productos dermocosmésticos profesionales. Envío a domicilio en todo Cantabria.",
 };
 
 export const revalidate = 60;
@@ -33,10 +33,10 @@ export default async function TiendaPage() {
           Nuestra Tienda
         </h1>
         <p className="text-primary font-medium text-base sm:text-lg md:text-xl">
-          ✨ Productos de alta calidad para el cuidado diario ✨
+          ✨ Productos de alta calidad para el cuidado diario de la piel ✨
         </p>
         <p className="text-gray-600 text-sm sm:text-base mt-2">
-          Nuestra línea exclusiva de cosmética profesional, con envío a domicilio
+          Nuestra tienda en línea exclusiva en productos dermocosmésticos profesionales. Envío a domicilio en todo Cantabria.
         </p>
       </div>
 

@@ -5,8 +5,8 @@ import { STORE_ENABLED } from "@/config/features";
 export const itemsNavbar = [
   {
     id: 1,
-    title: "Home",
-    icon: <HomeIcon size={25} color="#4A4A4A" strokeWidth={1} />,
+    title: "INICIO",
+    icon: <HomeIcon size={35} color="#4A4A4A" strokeWidth={1} />,
     link: "/",
   },
   // "Sobre Nosotros" ya no está en el menú: su texto de presentación abre
@@ -14,14 +14,14 @@ export const itemsNavbar = [
   // horarios) y se enlaza desde ahí.
   {
     id: 3,
-    title: "Servicios",
-    icon: <CodeSquare size={25} color="#4A4A4A" strokeWidth={1} />,
+    title: "SERVICIOS",
+    icon: <CodeSquare size={35} color="#4A4A4A" strokeWidth={1} />,
     link: "/servicios",
   },
   {
     id: 4,
-    title: "Reseñas",
-    icon: <Star size={25} color="#4A4A4A" strokeWidth={1} />,
+    title: "RESEÑAS",
+    icon: <Star size={35} color="#4A4A4A" strokeWidth={1} />,
     link: "/resenas",
   },
   // "Reservar Cita" ya no vive en el menú: se llega a ella desde el botón
@@ -31,8 +31,8 @@ export const itemsNavbar = [
     ? [
         {
           id: 6,
-          title: "Tienda",
-          icon: <ShoppingBag size={25} color="#4A4A4A" strokeWidth={1} />,
+          title: "TIENDA",
+          icon: <ShoppingBag size={35} color="#4A4A4A" strokeWidth={1} />,
           link: "/tienda",
         },
       ]
@@ -63,16 +63,17 @@ export interface Promocion {
 export const promociones: Promocion[] = [
   {
     id: "octubre",
-    cabecera: "Especial del mes",
-    etiqueta: "Octubre",
+    cabecera: "ESPECIAL DEL MES",
+    etiqueta: "OCTUBRE",
     titulo: "Después del verano, tu piel necesita un extra de cuidado",
     descripcion:
       "Es el momento perfecto para oxigenar, renovar y devolver luminosidad a tu piel, eliminando las células muertas acumuladas durante el verano.",
-    ofertas: [
-      { nombre: "Hydrafacial + Peeling químico", precio: "100 €" },
-      { nombre: "Hydrafacial + Dermapen", precio: "100 €" },
+     ofertas: [
+      { nombre: "Hidrafacial y Peeling químico superficial", precio: "120 €" },
+      { nombre: "Hidrafacial y Dermapen", precio: "100 €" },
+      { nombre: "Hidrafacial y Neuromodulador (tóxina botulinica)", precio: "340 €" },
     ],
-    aviso: "Plazas limitadas",
+    aviso: "Plazas limitadas (10)",
     cta: "Agenda tu cita de octubre",
     link: "/separar-cita",
   },
@@ -115,11 +116,11 @@ export const socialNetworks = [
 export const introductionData = {
   tituloPrincipal: "Sobre Nosotros",
   frases: [
-    "Bienvenido a Essentia Lux",
+    "Bienvenido a Essentia Lux Aesthetic Medicine",
     "Tu belleza natural, nuestro compromiso",
     "Tratamientos médico estéticos personalizados",
   ],
-  descripcion: `En Essentia Lux, nuestro propósito es resaltar tu belleza natural a través de tratamientos estéticos avanzados y personalizados. Nos enorgullece ofrecer un espacio donde la ciencia médica, la tecnología de vanguardia y el bienestar se encuentran para brindar resultados visibles y armoniosos.`,
+  descripcion: `En Essentia Lux Aesthetic Medicine, resaltamos tu belleza natural a través de tratamientos medico-estéticos avanzados y personalizados a tus necesidades. Nos enorgullece ofrecer un espacio donde la ciencia médica, la tecnología de vanguardia y el bienestar se encuentran para brindar resultados visibles y armoniosos.`,
   mision: `Brindar servicios de medicina estética de alta calidad que promuevan la salud, la autoestima y el bienestar integral de nuestros pacientes, mediante una atención personalizada y el uso de tecnología de última generación.`,
   vision: `Ser el centro de referencia en estética médica de la región, reconocido por la excelencia en los resultados, la ética profesional y la innovación constante.`,
   fraseInspiradora: "✨ Cuidamos tu belleza con alma y precisión",
@@ -129,7 +130,7 @@ export const introductionData = {
   equipoTitulo: "⚕️ CEO & Fundadora",
   equipoDescripcion: `Dra. Diana Catalina Tenjo`,
   equipoNombre: "Dra. Catalina Tenjo Marroquín",
-  equipoDetalles: `Médico especialista en medicina estética, experta en armonización facial y corporal con más de 14 años de experiencia en el sector salud.
+  equipoDetalles: `Médico especialista en medicina estética y regenerativa, experta en armonización facial y corporal con más de 14 años de experiencia en el sector salud.
 
   Se ha desempeñado con éxito en entornos de trabajos multidisciplinarios y equipos de alto rendimiento, destacando por su compromiso, liderazgo y orientación a resultados.
 
