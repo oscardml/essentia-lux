@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
     const { data: order } = await admin
       .from("orders")
-      .select("id, status")
+      .select("id, status, discount_code")
       .eq("stripe_checkout_session_id", session.id)
       .single();
 
@@ -62,6 +62,13 @@ export async function POST(request: Request) {
           p_product_id: item.product_id,
           p_quantity: item.quantity,
         });
+      }
+
+      if (order.discount_code) {
+        await admin
+          .from("discount_codes")
+          .update({ is_used: true })
+          .eq("code", order.discount_code);
       }
     }
   }

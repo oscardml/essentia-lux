@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { FaTag } from "react-icons/fa";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
-import { findDiscountCode } from "@/config/discounts";
+import { validateDiscountCode } from "@/app/actions/discounts";
 import { formatPrice, formatProductName } from "@/types/product";
 
 export default function CarritoPage() {
@@ -30,16 +30,14 @@ export default function CarritoPage() {
     : 0;
   const finalCents = totalCents - discountCents;
 
-  const handleApplyCode = () => {
+  const handleApplyCode = async () => {
     setCodeError(null);
-    const discount = findDiscountCode(codeInput);
+    if (!codeInput.trim()) return;
+
+    const discount = await validateDiscountCode(codeInput);
 
     if (!discount) {
-      setCodeError("Ese código no es válido.");
-      return;
-    }
-    if (discount.requiereCuenta && !user) {
-      setCodeError("Necesitas iniciar sesión para usar este código.");
+      setCodeError("Ese código no es válido o ya ha sido usado.");
       return;
     }
 

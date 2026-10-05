@@ -4,8 +4,6 @@ import { FaBoxOpen, FaStore, FaCalendarAlt } from "react-icons/fa";
 import { createClient } from "@/lib/supabase/server";
 import DatosPersonales from "@/components/cuenta/DatosPersonales";
 import SeguridadCuenta from "@/components/cuenta/SeguridadCuenta";
-import CodigoSocio from "@/components/cuenta/CodigoSocio";
-import { DISCOUNT_CODES } from "@/config/discounts";
 import { formatPrice, formatProductName } from "@/types/product";
 
 export const metadata = {
@@ -71,7 +69,6 @@ export default async function MiCuentaPage() {
     .returns<OrderRow[]>();
 
   const nombreCorto = profile?.full_name?.split(" ")[0];
-  const codigoSocio = DISCOUNT_CODES.find((d) => d.requiereCuenta);
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -84,14 +81,6 @@ export default async function MiCuentaPage() {
           <p className="text-white/80 mt-1">{user.email}</p>
         </div>
 
-        {profile?.is_member && codigoSocio && (
-          <div className="p-6 sm:p-8">
-            <CodigoSocio
-              code={codigoSocio.code}
-              percent={codigoSocio.percent}
-            />
-          </div>
-        )}
       </section>
 
       {/* Accesos rápidos */}

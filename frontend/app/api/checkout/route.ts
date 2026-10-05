@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { findDiscountCode } from "@/config/discounts";
 
 interface CheckoutItem {
   productId: string;
@@ -54,32 +53,21 @@ export async function POST(request: Request) {
   let appliedCode: string | null = null;
 
   if (discountCode) {
-    const discount = findDiscountCode(discountCode);
+    const { data: discountRow, error: discountError } = await admin
+      .from("discount_codes")
+      .select("code, percent, is_used")
+      .eq("code", discountCode.trim().toUpperCase())
+      .single();
 
-    if (!discount) {
+    if (discountError || !discountRow || discountRow.is_used) {
       return NextResponse.json(
-        { error: "El código de descuento no es válido." },
+        { error: "El código de descuento no es válido o ya ha sido usado." },
         { status: 400 }
       );
     }
 
-    if (discount.requiereCuenta) {
-      const { data: profile } = await admin
-        .from("profiles")
-        .select("is_member")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile?.is_member) {
-        return NextResponse.json(
-          { error: "Este código es exclusivo para socios." },
-          { status: 400 }
-        );
-      }
-    }
-
-    discountPercent = discount.percent;
-    appliedCode = discount.code;
+    discountPercent = discountRow.percent;
+    appliedCode = discountRow.code;
   }
 
   const lineItems: {
