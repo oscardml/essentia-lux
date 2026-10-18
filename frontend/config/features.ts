@@ -9,3 +9,10 @@
 // Cuando la tienda esté lista para el público, cambia esto a `true` y haz
 // deploy. No hay que tocar nada más: los botones y las páginas vuelven solos.
 export const STORE_ENABLED = true;
+
+// Interruptor global del módulo de eventos y registro de invitados en la página de inicio.
+// Mientras esté en `true`:
+//   - Muestra el widget lateral interactivo y el formulario de inscripción en la home.
+// Cuando esté en `false`:
+//   - Oculta completamente el módulo de eventos sin afectar al resto de la web.
+export const EVENTS_ENABLED = true;

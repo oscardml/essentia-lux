@@ -95,6 +95,8 @@ bloquea el push si detecta un secreto, pero no detecta todos los formatos.
 | Qué se quiere cambiar | Dónde | ¿Despliegue? |
 |---|---|---|
 | Productos, precios, **stock**, fotos, categorías | Supabase (tabla `products`) | No, inmediato |
+| Eventos (nombre, fecha, aforo, lugar) | Supabase (tabla `events`) | No, inmediato |
+| Activar/desactivar eventos | `frontend/config/features.ts` → `EVENTS_ENABLED` | Sí |
 | Promociones del inicio | `frontend/data.tsx` → `promociones` | Sí |
 | Códigos de descuento | `frontend/config/discounts.ts` | Sí |
 | Menú de navegación | `frontend/data.tsx` → `itemsNavbar` | Sí |
@@ -113,11 +115,15 @@ frontend/
     api/checkout/route.ts        Crea el pedido y la sesión de Stripe. CRÍTICO.
     api/webhooks/stripe/route.ts Marca el pedido pagado y descuenta stock. CRÍTICO.
     api/orders/by-session/       Consulta de pedido para la página de éxito.
+    api/events/active/           Consulta de evento activo y aforo disponible.
+    api/events/register/         Inscripción a eventos y notificación por email.
     tienda/                      Listado y ficha de producto.
     carrito/                     Carrito y aplicación del código de descuento.
     mi-cuenta/                   Perfil, pedidos, código de socio, contraseña.
     login/ registro/             Autenticación.
   components/
+    EventLateralWidget.tsx       Widget lateral flotante de eventos en inicio.
+    EventRegistrationModal.tsx   Modal y formulario de registro de asistentes.
     ProductCard.tsx              Tarjeta de producto de la tienda.
     TiendaGrid.tsx               Filtros por categoría y ordenación.
     PanelPromociones.tsx         Panel animado del inicio.
@@ -126,15 +132,18 @@ frontend/
     supabase/client.ts           Cliente de navegador.
     supabase/server.ts           Cliente de servidor (cookies).
     supabase/admin.ts            service_role. SOLO en Route Handlers. Ignora RLS.
+    email.ts                     Envío de correos de notificación (nodemailer).
     cart-context.tsx             Carrito (React Context + localStorage).
     auth-context.tsx             Sesión compartida. Una sola suscripción.
   config/
-    features.ts                  Interruptor STORE_ENABLED.
+    features.ts                  Interruptor STORE_ENABLED y EVENTS_ENABLED.
     discounts.ts                 Códigos de descuento.
   middleware.ts                  Edge Runtime. Ver trampa nº 1.
   types/product.ts               Tipo Product y formateadores.
+  types/event.ts                 Tipo EventItem y datos de registro.
 supabase/schema.sql              Esquema completo, idempotente.
 ```
+
 
 ---
 

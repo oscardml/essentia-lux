@@ -3,10 +3,13 @@ import Link from 'next/link'
 import { introductionData } from '@/data'
 import { MotionTransition } from '@/components/transition-component'
 import PanelPromociones from '@/components/PanelPromociones'
+import EventLateralWidget from '@/components/EventLateralWidget'
 
 export default function Home() {
   return (
     <div className="relative w-full min-h-screen overflow-hidden pb-16 pt-24 lg:pt-24 bg-white">
+      {/* Zona lateral izquierda para eventos e inscripciones */}
+      <EventLateralWidget />
       
       {/* Fondo blanco con gradientes sutiles */}
       <div className="absolute inset-0 bg-white">
@@ -111,15 +114,8 @@ export default function Home() {
         </MotionTransition>
 
         {/* Floating elements decorativos minimalistas */}
-        <div className="hidden lg:block absolute top-1/4 left-8 opacity-30">
-          <div className="flex flex-col space-y-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-[#6A806C] rounded-lg rotate-45 shadow-elegant"></div>
-            <div className="w-6 h-6 bg-gradient-to-br from-gray-300 to-primary rounded-full shadow-md"></div>
-            <div className="w-4 h-4 bg-gradient-to-br from-primary to-gray-300 rounded-lg shadow-sm"></div>
-          </div>
-        </div>
-
         <div className="hidden lg:block absolute top-1/3 right-8 opacity-30">
+
           <div className="flex flex-col space-y-4">
             <div className="w-6 h-6 bg-gradient-to-bl from-gray-300 to-primary rounded-full shadow-md"></div>
             <div className="w-8 h-8 bg-gradient-to-bl from-primary to-[#6A806C] rounded-lg -rotate-12 shadow-elegant"></div>

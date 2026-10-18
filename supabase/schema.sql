@@ -1,4 +1,4 @@
-﻿-- ============================================================
+-- ============================================================
 --  Essentia Lux -- Esquema de la tienda y usuarios (Supabase)
 -- ============================================================
 --
@@ -221,3 +221,92 @@ insert into public.discount_codes (code, percent) values
   ('LUX-D3E9', 10),
   ('LUX-F6G2', 10)
 on conflict (code) do nothing;
+
+
+-- ------------------------------------------------------------
+-- 6. EVENTS + EVENT_REGISTRATIONS (Eventos y registro de invitados)
+-- ------------------------------------------------------------
+create table if not exists public.events (
+  id                uuid primary key default gen_random_uuid(),
+  slug              text unique not null,
+  title             text not null,
+  description       text,
+  target_audience   text,
+  event_date        timestamptz not null,
+  location_name     text not null,
+  location_address  text not null,
+  instagram_handles text[] not null default '{}',
+  features_included text[] not null default '{}',
+  capacity          int not null default 30,
+  active            boolean not null default true,
+  created_at        timestamptz not null default now()
+);
+
+create table if not exists public.event_registrations (
+  id                uuid primary key default gen_random_uuid(),
+  event_id          uuid not null references public.events(id) on delete cascade,
+  full_name         text not null,
+  phone             text not null,
+  instagram_handle  text not null,
+  created_at        timestamptz not null default now(),
+  constraint unique_event_phone unique(event_id, phone)
+);
+
+alter table public.events enable row level security;
+alter table public.event_registrations enable row level security;
+
+-- Lectura pública de eventos activos
+drop policy if exists "Events are publicly readable" on public.events;
+create policy "Events are publicly readable"
+  on public.events for select
+  using (active = true);
+
+-- Las inscripciones NO son de lectura pública por privacidad y RGPD.
+-- Solo el servidor mediante service_role puede insertar o leer registros.
+
+-- Evento inaugural Essentia Lux x Corpore10 (idempotente)
+insert into public.events (
+  slug,
+  title,
+  description,
+  target_audience,
+  event_date,
+  location_name,
+  location_address,
+  instagram_handles,
+  features_included,
+  capacity,
+  active
+) values (
+  'esculpe-tu-mejor-version-corpore10',
+  'Esculpe tu Mejor Versión: Open Day Essentia x Corpore',
+  'Un evento exclusivo donde el entrenamiento de alto rendimiento y la medicina estética avanzada se unen para transformar tu bienestar.',
+  'Invitación exclusiva para personas interesadas en entrenar en Corpore10 y tratamientos de medicina estética y dermocosmética ofertados por Essentia Lux Aesthetic Medicine.',
+  '2026-11-28 10:00:00+01',
+  'Gimnasio Corpore10 Cross Training',
+  'Polígono Cros, 38D (junto a Makro), 39600 Maliaño (Camargo), Cantabria',
+  array['essentialux_am', 'corpore10cantabria'],
+  array[
+    'Presentación de la alianza exclusiva',
+    'Catering para invitados y colaboradores',
+    'Evento y degustación de vinos',
+    'Procedimientos y demostraciones en vivo',
+    'Charla sobre la importancia del deporte y cuidados médico-estéticos',
+    'Presentación de portafolios Essentia Lux y Corpore10',
+    'Plan especial de beneficios mutuos para clientes',
+    'Detalles y sorpresas exclusivas para invitados'
+  ],
+  30,
+  true
+)
+on conflict (slug) do update set
+  title = excluded.title,
+  description = excluded.description,
+  target_audience = excluded.target_audience,
+  event_date = excluded.event_date,
+  location_name = excluded.location_name,
+  location_address = excluded.location_address,
+  instagram_handles = excluded.instagram_handles,
+  features_included = excluded.features_included,
+  capacity = excluded.capacity,
+  active = excluded.active;
