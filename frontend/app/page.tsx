@@ -7,7 +7,7 @@ import EventLateralWidget from '@/components/EventLateralWidget'
 
 export default function Home() {
   return (
-    <div className="relative w-full min-h-screen overflow-hidden pb-16 pt-24 lg:pt-24 bg-white">
+    <div className="relative w-full min-h-screen overflow-hidden pb-16 bg-white">
       {/* Zona lateral izquierda para eventos e inscripciones */}
       <EventLateralWidget />
       

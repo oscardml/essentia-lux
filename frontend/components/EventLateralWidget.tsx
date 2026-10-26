@@ -107,7 +107,7 @@ export default function EventLateralWidget() {
       {!isCollapsed && (
         <aside
           aria-label="Información y registro de eventos"
-          className="fixed z-40 inset-x-3 bottom-3 sm:inset-x-auto sm:bottom-auto sm:left-4 sm:top-1/2 sm:-translate-y-1/2 w-[min(380px,calc(100vw-2rem))] max-h-[calc(100vh-2rem)] max-h-[calc(100dvh-2rem)] flex flex-col bg-[#FCFAF6] rounded-2xl sm:rounded-3xl shadow-2xl border border-[#AF7E44]/35 transition-all duration-300"
+          className="fixed z-40 inset-x-2 bottom-2 sm:inset-x-auto sm:bottom-auto sm:left-4 sm:top-1/2 sm:-translate-y-1/2 w-[min(380px,calc(100vw-1rem))] sm:w-[min(380px,calc(100vw-2rem))] max-h-[calc(100dvh-9.5rem)] max-h-[calc(100vh-9.5rem)] sm:max-h-[calc(100dvh-2rem)] sm:max-h-[calc(100vh-2rem)] flex flex-col bg-[#FCFAF6] rounded-2xl sm:rounded-3xl shadow-2xl border border-[#AF7E44]/35 transition-all duration-300"
         >
           {/* CABECERA FIJA CON BOTÓN DE CIERRE (✕) TÁCTIL 44x44px */}
           <div className="shrink-0 px-4 pt-3.5 pb-2.5 border-b border-amber-100/70 flex items-center justify-between gap-2 bg-[#FCFAF6] rounded-t-2xl sm:rounded-t-3xl z-20">

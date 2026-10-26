@@ -254,7 +254,7 @@ export default function RootLayout({
             <main
               className="
                 min-h-screen
-                pt-[140px] sm:pt-[150px] md:pt-40 lg:pt-44 xl:pt-48
+                pt-[136px] sm:pt-[150px] md:pt-40 lg:pt-44 xl:pt-48
                 px-3 sm:px-4 md:px-6 lg:px-8
                 pb-24
               "
