@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { EventItem } from "@/types/event";
 import { X, Calendar, MapPin, Instagram, Users, CheckCircle, Wine, Sparkles, Dumbbell, Award, ArrowRight } from "lucide-react";
 
@@ -24,6 +24,28 @@ export default function EventRegistrationModal({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // Bloqueo de scroll en el body mientras el modal está abierto
+  useEffect(() => {
+    if (!isOpen) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen]);
+
+  // Cerrar con la tecla Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen || !event) return null;
 
@@ -83,200 +105,197 @@ export default function EventRegistrationModal({
   const percentageTaken = Math.min(100, Math.round(((capacity - remaining) / capacity) * 100));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto bg-black/60 backdrop-blur-sm animate-fadeIn">
+    <div
+      className="fixed inset-0 z-[100000] flex items-center justify-center p-2.5 sm:p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
+      onClick={onClose}
+    >
+      {/* CAJA DEL MODAL ULTRA COMPACTA (~70% más reducida en volumen y proporciones) */}
       <div 
-        className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden my-auto max-h-[92vh] flex flex-col"
+        className="relative w-full max-w-[360px] sm:max-w-[390px] bg-white rounded-2xl shadow-2xl border border-[#AF7E44]/30 max-h-[calc(100vh-2rem)] max-h-[calc(100dvh-2rem)] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Cabecera con degradado distintivo */}
-        <div className="relative bg-gradient-to-r from-[#AF7E44] via-[#8B6536] to-[#6A806C] text-white p-6 sm:p-8">
+        {/* CABECERA FIJA Y ULTRA COMPACTA */}
+        <div className="relative bg-gradient-to-r from-[#AF7E44] via-[#8B6536] to-[#6A806C] text-white px-3 py-2.5 shrink-0 z-20">
           <button
             onClick={onClose}
-            aria-label="Cerrar modal"
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 rounded-full bg-black/20 hover:bg-black/35 text-white flex items-center justify-center transition-colors"
+            aria-label="Cerrar"
+            className="absolute top-2 right-2 min-w-[36px] min-h-[36px] w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors cursor-pointer z-30"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold tracking-wider uppercase mb-3 text-white">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[9px] font-semibold tracking-wider uppercase mb-1 text-white">
+            <Sparkles className="w-2.5 h-2.5" />
             Evento Exclusivo · Aforo Limitado
           </div>
 
-          <div className="text-center my-2">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-amber-200 uppercase leading-tight">
+          <div className="text-center my-0.5 pr-6 sm:pr-0">
+            <h2 className="text-xs sm:text-sm font-black tracking-tight text-amber-200 uppercase leading-tight">
               ESCULPE TU MEJOR VERSIÓN
             </h2>
-            <h3 className="text-xs sm:text-sm md:text-base font-extrabold text-[#e2ede4] uppercase tracking-wider mt-1">
+            <h3 className="text-[10px] sm:text-[11px] font-extrabold text-[#e2ede4] uppercase tracking-wider mt-0.5">
               OPEN DAY ESSENTIA X CORPORE
             </h3>
-            <p className="mt-2 text-xs sm:text-sm text-white/90 font-medium">
-              Alianza oficial Essentia Lux Aesthetic Medicine & Corpore10 Cross Training
-            </p>
           </div>
 
-          {/* Barra de progreso de aforo */}
-          <div className="mt-4 bg-black/20 rounded-xl p-3 backdrop-blur-xs">
-            <div className="flex justify-between items-center text-xs font-semibold mb-1.5">
-              <span className="flex items-center gap-1.5 text-white">
-                <Users className="w-4 h-4 text-amber-200" />
-                Cupo de invitados: <span className="underline underline-offset-2">{capacity} personas</span>
+          {/* Barra de progreso de aforo compacta */}
+          <div className="mt-1.5 bg-black/25 rounded-lg px-2 py-1 backdrop-blur-xs">
+            <div className="flex justify-between items-center text-[10px] font-semibold mb-0.5">
+              <span className="flex items-center gap-1 text-white">
+                <Users className="w-3 h-3 text-amber-200" />
+                Cupo: <span className="underline underline-offset-1">{capacity} personas</span>
               </span>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${remaining <= 5 ? 'bg-red-500 text-white animate-pulse' : 'bg-emerald-500/90 text-white'}`}>
-                {remaining === 0 ? "Aforo Completo" : `¡Solo quedan ${remaining} plazas!`}
+              <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold ${remaining <= 5 ? 'bg-red-500 text-white animate-pulse' : 'bg-emerald-500/95 text-white'}`}>
+                {remaining === 0 ? "Agotado" : `Quedan ${remaining} plazas`}
               </span>
             </div>
-            <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-white/20 rounded-full h-1 overflow-hidden">
               <div 
-                className="bg-gradient-to-r from-amber-300 to-emerald-300 h-2 rounded-full transition-all duration-700"
+                className="bg-gradient-to-r from-amber-300 to-emerald-300 h-1 rounded-full transition-all duration-700"
                 style={{ width: `${Math.max(percentageTaken, 8)}%` }}
               ></div>
             </div>
           </div>
         </div>
 
-        {/* Contenido scrolleable */}
-        <div className="p-5 sm:p-8 overflow-y-auto space-y-6">
+        {/* CUERPO CON SCROLL INDEPENDIENTE ULTRA COMPACTO */}
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-3 space-y-2.5 text-gray-700">
           {isSuccess ? (
-            <div className="text-center py-8 space-y-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
-                <CheckCircle className="w-10 h-10 sm:w-12 sm:h-12" />
+            <div className="text-center py-4 space-y-2.5">
+              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                <CheckCircle className="w-7 h-7" />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              <h3 className="text-lg font-bold text-gray-900">
                 ¡Plaza Confirmada con Éxito!
               </h3>
-              <p className="text-sm sm:text-base text-gray-600 max-w-md mx-auto leading-relaxed">
+              <p className="text-xs text-gray-600 max-w-xs mx-auto leading-relaxed">
                 Gracias <strong>{fullName}</strong>. Tu inscripción ha sido registrada para el <strong>28 de noviembre a las 10:00 h</strong> en Corpore10.
               </p>
-              <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-4 text-xs sm:text-sm text-amber-900 text-left max-w-md mx-auto space-y-1">
-                <p className="font-bold flex items-center gap-1.5 text-[#AF7E44]">
-                  <Sparkles className="w-4 h-4" /> Recordatorios importantes:
+              <div className="bg-amber-50 border border-amber-200/80 rounded-lg p-2.5 text-[11px] text-amber-900 text-left max-w-xs mx-auto space-y-1">
+                <p className="font-bold flex items-center gap-1 text-[#AF7E44]">
+                  <Sparkles className="w-3 h-3" /> Recordatorios importantes:
                 </p>
                 <p>• Dirección: Polígono Cros, 38D (junto a Makro), 39600 Maliaño.</p>
                 <p>• Asegúrate de tener activas tus notificaciones en Instagram.</p>
-                <p>• Se ha notificado la reserva a nuestro equipo (<strong>info@essluxam.com</strong>).</p>
+                <p>• Notificado a nuestro equipo (<strong>info@essluxam.com</strong>).</p>
               </div>
               <button
                 onClick={onClose}
-                className="mt-6 px-8 py-3 bg-[#AF7E44] hover:bg-[#966b37] text-white font-semibold rounded-xl transition-all shadow-md"
+                className="mt-2 px-5 py-2 bg-[#AF7E44] hover:bg-[#966b37] text-white text-xs font-semibold rounded-lg transition-all shadow-md cursor-pointer"
               >
                 Cerrar y volver
               </button>
             </div>
           ) : (
             <>
-              {/* Información clave del evento */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <div className="flex items-start gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100">
-                  <div className="p-2.5 rounded-xl bg-[#AF7E44]/10 text-[#AF7E44] shrink-0">
-                    <Calendar className="w-5 h-5" />
+              {/* Información clave del evento (2 columnas) */}
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="p-1.5 rounded bg-[#AF7E44]/10 text-[#AF7E44] shrink-0">
+                    <Calendar className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha y Hora</p>
-                    <p className="text-sm font-bold text-gray-900 mt-0.5">Sábado, 28 Noviembre 2026</p>
-                    <p className="text-xs text-gray-600">A partir de las 10:00 AM</p>
+                    <p className="text-[9px] font-semibold text-gray-500 uppercase">Fecha y Hora</p>
+                    <p className="text-[11px] font-bold text-gray-900 mt-0.5">Sáb, 28 Nov 2026</p>
+                    <p className="text-[10px] text-gray-600">Desde las 10:00 AM</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3.5 bg-gray-50 rounded-2xl border border-gray-100">
-                  <div className="p-2.5 rounded-xl bg-[#6A806C]/10 text-[#6A806C] shrink-0">
-                    <MapPin className="w-5 h-5" />
+                <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="p-1.5 rounded bg-[#6A806C]/10 text-[#6A806C] shrink-0">
+                    <MapPin className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Ubicación</p>
-                    <p className="text-sm font-bold text-gray-900 mt-0.5">Corpore10 Cross Training</p>
-                    <p className="text-xs text-gray-600 leading-snug">
-                      Polígono Cros, 38D (junto a Makro), 39600 Maliaño
-                    </p>
+                    <p className="text-[9px] font-semibold text-gray-500 uppercase">Ubicación</p>
+                    <p className="text-[11px] font-bold text-gray-900 mt-0.5">Corpore10 Training</p>
+                    <p className="text-[10px] text-gray-600 leading-tight">Polígono Cros, Maliaño</p>
                   </div>
                 </div>
               </div>
 
               {/* Perfil de invitados / Requisitos */}
-              <div className="bg-gradient-to-r from-amber-50/60 to-emerald-50/60 border border-amber-200/50 rounded-2xl p-4">
-                <p className="text-xs font-bold text-[#AF7E44] uppercase tracking-wide flex items-center gap-1.5 mb-1">
-                  <Award className="w-4 h-4" /> Invitación Exclusiva
+              <div className="bg-gradient-to-r from-amber-50/70 to-emerald-50/70 border border-amber-200/50 rounded-lg p-2">
+                <p className="text-[9px] font-bold text-[#AF7E44] uppercase tracking-wide flex items-center gap-1 mb-0.5">
+                  <Award className="w-3 h-3" /> Invitación Exclusiva
                 </p>
-                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
-                  {event.target_audience || "Invitación exclusiva para personas interesadas en entrenar en Corpore10 y tratamientos de medicina estética y dermocosmética ofertados por Essentia Lux Aesthetic Medicine."}
+                <p className="text-[11px] text-gray-700 leading-snug font-medium">
+                  {event.target_audience || "Personas interesadas en entrenar en Corpore10 y medicina estética de Essentia Lux."}
                 </p>
               </div>
 
               {/* Qué incluye */}
-              <div className="space-y-2.5">
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+              <div className="space-y-1">
+                <p className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">
                   El evento incluye:
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#AF7E44] shrink-0" />
-                    <span>Presentación de la alianza</span>
+                <div className="grid grid-cols-2 gap-1 text-[11px] text-gray-700">
+                  <div className="flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-[#AF7E44] shrink-0" />
+                    <span>Presentación alianza</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Wine className="w-4 h-4 text-rose-500 shrink-0" />
-                    <span>Catering y degustación de vinos</span>
+                  <div className="flex items-center gap-1">
+                    <Wine className="w-3 h-3 text-rose-500 shrink-0" />
+                    <span>Catering & vinos</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#6A806C] shrink-0" />
+                  <div className="flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-[#6A806C] shrink-0" />
                     <span>Procedimientos en vivo</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Dumbbell className="w-4 h-4 text-gray-700 shrink-0" />
-                    <span>Charla: Deporte y Medicina Estética</span>
+                  <div className="flex items-center gap-1">
+                    <Dumbbell className="w-3 h-3 text-gray-700 shrink-0" />
+                    <span>Charla de salud & deporte</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Portafolio Essentia Lux & Corpore10</span>
+                  <div className="flex items-center gap-1">
+                    <CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" />
+                    <span>Portafolio exclusivo</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Award className="w-4 h-4 text-amber-500 shrink-0" />
-                    <span>Plan de beneficios y obsequios</span>
+                  <div className="flex items-center gap-1">
+                    <Award className="w-3 h-3 text-amber-500 shrink-0" />
+                    <span>Beneficios & obsequios</span>
                   </div>
                 </div>
               </div>
 
               {/* Logos de las marcas colaboradoras */}
-              <div className="p-3 bg-amber-50/40 rounded-2xl border border-amber-200/50">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#AF7E44] text-center mb-2">
-                  Alianza Oficial Essentia Lux & Corpore10
-                </p>
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-16 h-16 sm:w-18 sm:h-18 aspect-square bg-[#FDF7EB] rounded-2xl border border-[#AF7E44]/60 overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
+              <div className="p-2 bg-amber-50/40 rounded-lg border border-amber-200/50">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-8 h-8 max-h-8 bg-[#FDF7EB] rounded-lg border border-[#AF7E44]/60 overflow-hidden shadow-2xs shrink-0 flex items-center justify-center p-0.5">
                     <img
                       src="/logo-essentia-event.jpg"
-                      alt="Essentia Lux Aesthetic Medicine"
+                      alt="Essentia Lux"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <span className="text-[#AF7E44] font-black text-sm select-none">✕</span>
-                  <div className="w-16 h-16 sm:w-18 sm:h-18 aspect-square bg-black rounded-2xl border border-gray-800 flex items-center justify-center p-2 shadow-xs shrink-0">
+                  <span className="text-[#AF7E44] font-black text-[10px] select-none">✕</span>
+                  <div className="w-8 h-8 max-h-8 bg-black rounded-lg border border-gray-800 flex items-center justify-center p-0.5 shadow-2xs shrink-0 overflow-hidden">
                     <img
                       src="/logo-corpore10-event.jpg"
-                      alt="Corpore10 Cross Training"
+                      alt="Corpore10"
                       className="w-full h-full object-contain"
                     />
                   </div>
+                  <span className="text-[10px] font-bold text-gray-600 ml-1">Alianza Oficial</span>
                 </div>
               </div>
 
-
               {/* Formulario de registro */}
-
-              <form onSubmit={handleSubmit} className="space-y-4 pt-2 border-t border-gray-100">
-                <h4 className="text-sm font-bold text-gray-900 flex items-center justify-between">
-                  <span>Reserva tu plaza de invitado</span>
-                  <span className="text-xs font-normal text-gray-500">Sin coste · 30 plazas máx.</span>
-                </h4>
+              <form onSubmit={handleSubmit} className="space-y-2 pt-1 border-t border-gray-100">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-[11px] font-bold text-gray-900">
+                    Reserva tu plaza de invitado
+                  </h4>
+                  <span className="text-[9px] font-normal text-gray-500">Gratuito · 30 cupos</span>
+                </div>
 
                 {errorMsg && (
-                  <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm rounded-xl animate-shake">
+                  <div className="p-2 bg-red-50 border border-red-200 text-red-700 text-[11px] rounded-lg">
                     {errorMsg}
                   </div>
                 )}
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    <label className="block text-[10px] font-semibold text-gray-700 mb-0.5">
                       Nombre y Apellidos *
                     </label>
                     <input
@@ -284,13 +303,13 @@ export default function EventRegistrationModal({
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Ej. Carmen Rodríguez Gómez"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
+                      placeholder="Ej. Carmen Rodríguez"
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-[11px] text-gray-800"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    <label className="block text-[10px] font-semibold text-gray-700 mb-0.5">
                       Teléfono Móvil (WhatsApp) *
                     </label>
                     <input
@@ -299,39 +318,39 @@ export default function EventRegistrationModal({
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Ej. 612 34 56 78"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-[11px] text-gray-800"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Tu usuario de Instagram *
+                    <label className="block text-[10px] font-semibold text-gray-700 mb-0.5">
+                      Usuario de Instagram *
                     </label>
                     <div className="relative">
-                      <span className="absolute left-3.5 top-2.5 text-gray-400 font-semibold text-sm">@</span>
+                      <span className="absolute left-2.5 top-1.5 text-gray-400 font-semibold text-[11px]">@</span>
                       <input
                         type="text"
                         required
                         value={instagramHandle}
                         onChange={(e) => setInstagramHandle(e.target.value)}
                         placeholder="tu_usuario"
-                        className="w-full pl-8 pr-3.5 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
+                        className="w-full pl-6 pr-2.5 py-1.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-[11px] text-gray-800"
                       />
                     </div>
                   </div>
 
                   {/* Requisito de Instagram */}
-                  <div className="bg-gray-50 border border-gray-200/80 rounded-xl p-3 text-xs text-gray-600 space-y-2">
-                    <div className="flex items-center gap-1.5 text-gray-700 font-semibold">
-                      <Instagram className="w-4 h-4 text-pink-600" />
-                      Requisito del evento: Seguir las cuentas oficiales
+                  <div className="bg-gray-50 border border-gray-200/80 rounded-lg p-2 text-[10px] text-gray-600 space-y-1">
+                    <div className="flex items-center gap-1 text-gray-700 font-semibold text-[10px]">
+                      <Instagram className="w-3 h-3 text-pink-600" />
+                      Requisito: Seguir ambas cuentas
                     </div>
-                    <div className="flex flex-wrap gap-2 pt-0.5">
+                    <div className="flex flex-wrap gap-1 pt-0.5">
                       <a
                         href="https://www.instagram.com/essentialux_am"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-bold text-gray-800 transition-colors"
+                        className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-white hover:bg-gray-100 border border-gray-200 rounded text-[10px] font-bold text-gray-800 transition-colors"
                       >
                         @essentialux_am ↗
                       </a>
@@ -339,48 +358,45 @@ export default function EventRegistrationModal({
                         href="https://www.instagram.com/corpore10cantabria"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-bold text-gray-800 transition-colors"
+                        className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-white hover:bg-gray-100 border border-gray-200 rounded text-[10px] font-bold text-gray-800 transition-colors"
                       >
                         @corpore10cantabria ↗
                       </a>
                     </div>
-                    <label className="flex items-start gap-2 pt-1 cursor-pointer select-none">
+                    <label className="flex items-start gap-1 pt-0.5 cursor-pointer select-none">
                       <input
                         type="checkbox"
                         checked={followsInstagram}
                         onChange={(e) => setFollowsInstagram(e.target.checked)}
-                        className="mt-0.5 h-4 w-4 rounded border-gray-300 text-[#AF7E44] focus:ring-[#AF7E44]"
+                        className="mt-0.5 h-3 w-3 rounded border-gray-300 text-[#AF7E44] focus:ring-[#AF7E44]"
                       />
-                      <span className="text-xs text-gray-700 font-medium">
-                        Confirmo que sigo a ambas cuentas en Instagram para participar en el evento.
+                      <span className="text-[10px] text-gray-700 font-medium">
+                        Confirmo que sigo a ambas cuentas en Instagram.
                       </span>
                     </label>
                   </div>
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-1">
                   <button
                     type="submit"
                     disabled={loading || remaining === 0}
-                    className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#AF7E44] to-[#6A806C] hover:opacity-95 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-[#AF7E44]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#AF7E44] to-[#6A806C] hover:opacity-95 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md shadow-[#AF7E44]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {loading ? (
                       <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Registrando plaza...</span>
+                        <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span>Registrando...</span>
                       </>
                     ) : remaining === 0 ? (
                       <span>Plazas agotadas</span>
                     ) : (
                       <>
                         <span>Confirmar mi Plaza ({remaining} disponibles)</span>
-                        <ArrowRight className="w-4 h-4" />
+                        <ArrowRight className="w-3 h-3" />
                       </>
                     )}
                   </button>
-                  <p className="text-[11px] text-center text-gray-500 mt-2">
-                    Recibirás confirmación y el equipo organizador te esperará el 28 de noviembre.
-                  </p>
                 </div>
               </form>
             </>
