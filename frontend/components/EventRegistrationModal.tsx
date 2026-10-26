@@ -106,15 +106,15 @@ export default function EventRegistrationModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100000] flex items-center justify-center p-2.5 sm:p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-[100000] flex items-end sm:items-center justify-center sm:p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
       onClick={onClose}
     >
-      {/* CAJA DEL MODAL ULTRA COMPACTA (~70% más reducida en volumen y proporciones) */}
+      {/* CAJA DEL MODAL: bottom-sheet en móvil, centrado en desktop */}
       <div 
-        className="relative w-full max-w-[360px] sm:max-w-[390px] bg-white rounded-2xl shadow-2xl border border-[#AF7E44]/30 max-h-[calc(100vh-2rem)] max-h-[calc(100dvh-2rem)] flex flex-col overflow-hidden"
+        className="relative w-full sm:max-w-[420px] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-[#AF7E44]/30 max-h-[90dvh] max-h-[90vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* CABECERA FIJA Y ULTRA COMPACTA */}
+        {/* CABECERA COMPACTA */}
         <div className="relative bg-gradient-to-r from-[#AF7E44] via-[#8B6536] to-[#6A806C] text-white px-3 py-2.5 shrink-0 z-20">
           <button
             onClick={onClose}
@@ -158,7 +158,7 @@ export default function EventRegistrationModal({
           </div>
         </div>
 
-        {/* CUERPO CON SCROLL INDEPENDIENTE ULTRA COMPACTO */}
+        {/* CUERPO CON SCROLL INDEPENDIENTE */}
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-3 space-y-2.5 text-gray-700">
           {isSuccess ? (
             <div className="text-center py-4 space-y-2.5">
@@ -188,98 +188,8 @@ export default function EventRegistrationModal({
             </div>
           ) : (
             <>
-              {/* Información clave del evento (2 columnas) */}
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="p-1.5 rounded bg-[#AF7E44]/10 text-[#AF7E44] shrink-0">
-                    <Calendar className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-semibold text-gray-500 uppercase">Fecha y Hora</p>
-                    <p className="text-[11px] font-bold text-gray-900 mt-0.5">Sáb, 28 Nov 2026</p>
-                    <p className="text-[10px] text-gray-600">Desde las 10:00 AM</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="p-1.5 rounded bg-[#6A806C]/10 text-[#6A806C] shrink-0">
-                    <MapPin className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-semibold text-gray-500 uppercase">Ubicación</p>
-                    <p className="text-[11px] font-bold text-gray-900 mt-0.5">Corpore10 Training</p>
-                    <p className="text-[10px] text-gray-600 leading-tight">Polígono Cros, Maliaño</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Perfil de invitados / Requisitos */}
-              <div className="bg-gradient-to-r from-amber-50/70 to-emerald-50/70 border border-amber-200/50 rounded-lg p-2">
-                <p className="text-[9px] font-bold text-[#AF7E44] uppercase tracking-wide flex items-center gap-1 mb-0.5">
-                  <Award className="w-3 h-3" /> Invitación Exclusiva
-                </p>
-                <p className="text-[11px] text-gray-700 leading-snug font-medium">
-                  {event.target_audience || "Personas interesadas en entrenar en Corpore10 y medicina estética de Essentia Lux."}
-                </p>
-              </div>
-
-              {/* Qué incluye */}
-              <div className="space-y-1">
-                <p className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">
-                  El evento incluye:
-                </p>
-                <div className="grid grid-cols-2 gap-1 text-[11px] text-gray-700">
-                  <div className="flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#AF7E44] shrink-0" />
-                    <span>Presentación alianza</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Wine className="w-3 h-3 text-rose-500 shrink-0" />
-                    <span>Catering & vinos</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#6A806C] shrink-0" />
-                    <span>Procedimientos en vivo</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Dumbbell className="w-3 h-3 text-gray-700 shrink-0" />
-                    <span>Charla de salud & deporte</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" />
-                    <span>Portafolio exclusivo</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Award className="w-3 h-3 text-amber-500 shrink-0" />
-                    <span>Beneficios & obsequios</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Logos de las marcas colaboradoras */}
-              <div className="p-2 bg-amber-50/40 rounded-lg border border-amber-200/50">
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-8 h-8 max-h-8 bg-[#FDF7EB] rounded-lg border border-[#AF7E44]/60 overflow-hidden shadow-2xs shrink-0 flex items-center justify-center p-0.5">
-                    <img
-                      src="/logo-essentia-event.jpg"
-                      alt="Essentia Lux"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <span className="text-[#AF7E44] font-black text-[10px] select-none">✕</span>
-                  <div className="w-8 h-8 max-h-8 bg-black rounded-lg border border-gray-800 flex items-center justify-center p-0.5 shadow-2xs shrink-0 overflow-hidden">
-                    <img
-                      src="/logo-corpore10-event.jpg"
-                      alt="Corpore10"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <span className="text-[10px] font-bold text-gray-600 ml-1">Alianza Oficial</span>
-                </div>
-              </div>
-
-              {/* Formulario de registro */}
-              <form onSubmit={handleSubmit} className="space-y-2 pt-1 border-t border-gray-100">
+              {/* FORMULARIO DE REGISTRO PRIMERO — visible de inmediato sin scroll */}
+              <form onSubmit={handleSubmit} className="space-y-2 border-b border-gray-100 pb-3">
                 <div className="flex items-center justify-between">
                   <h4 className="text-[11px] font-bold text-gray-900">
                     Reserva tu plaza de invitado
@@ -304,7 +214,7 @@ export default function EventRegistrationModal({
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Ej. Carmen Rodríguez"
-                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-[11px] text-gray-800"
+                      className="w-full px-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
                     />
                   </div>
 
@@ -318,7 +228,7 @@ export default function EventRegistrationModal({
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Ej. 612 34 56 78"
-                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-[11px] text-gray-800"
+                      className="w-full px-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
                     />
                   </div>
 
@@ -327,14 +237,14 @@ export default function EventRegistrationModal({
                       Usuario de Instagram *
                     </label>
                     <div className="relative">
-                      <span className="absolute left-2.5 top-1.5 text-gray-400 font-semibold text-[11px]">@</span>
+                      <span className="absolute left-2.5 top-2 text-gray-400 font-semibold text-sm">@</span>
                       <input
                         type="text"
                         required
                         value={instagramHandle}
                         onChange={(e) => setInstagramHandle(e.target.value)}
                         placeholder="tu_usuario"
-                        className="w-full pl-6 pr-2.5 py-1.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-[11px] text-gray-800"
+                        className="w-full pl-6 pr-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
                       />
                     </div>
                   </div>
@@ -381,7 +291,7 @@ export default function EventRegistrationModal({
                   <button
                     type="submit"
                     disabled={loading || remaining === 0}
-                    className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#AF7E44] to-[#6A806C] hover:opacity-95 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md shadow-[#AF7E44]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="w-full py-2.5 px-3 rounded-lg bg-gradient-to-r from-[#AF7E44] to-[#6A806C] hover:opacity-95 text-white font-bold text-sm flex items-center justify-center gap-1 shadow-md shadow-[#AF7E44]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {loading ? (
                       <>
@@ -393,12 +303,77 @@ export default function EventRegistrationModal({
                     ) : (
                       <>
                         <span>Confirmar mi Plaza ({remaining} disponibles)</span>
-                        <ArrowRight className="w-3 h-3" />
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </>
                     )}
                   </button>
                 </div>
               </form>
+
+              {/* DETALLES DEL EVENTO (debajo del formulario, accesibles con scroll) */}
+              <div className="space-y-2">
+                {/* Información clave (2 columnas) */}
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
+                    <div className="p-1.5 rounded bg-[#AF7E44]/10 text-[#AF7E44] shrink-0">
+                      <Calendar className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-semibold text-gray-500 uppercase">Fecha y Hora</p>
+                      <p className="text-[11px] font-bold text-gray-900 mt-0.5">Sáb, 28 Nov 2026</p>
+                      <p className="text-[10px] text-gray-600">Desde las 10:00 AM</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
+                    <div className="p-1.5 rounded bg-[#6A806C]/10 text-[#6A806C] shrink-0">
+                      <MapPin className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-semibold text-gray-500 uppercase">Ubicación</p>
+                      <p className="text-[11px] font-bold text-gray-900 mt-0.5">Corpore10 Training</p>
+                      <p className="text-[10px] text-gray-600 leading-tight">Polígono Cros, Maliaño</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Perfil */}
+                <div className="bg-gradient-to-r from-amber-50/70 to-emerald-50/70 border border-amber-200/50 rounded-lg p-2">
+                  <p className="text-[9px] font-bold text-[#AF7E44] uppercase tracking-wide flex items-center gap-1 mb-0.5">
+                    <Award className="w-3 h-3" /> Invitación Exclusiva
+                  </p>
+                  <p className="text-[11px] text-gray-700 leading-snug font-medium">
+                    {event.target_audience || "Personas interesadas en entrenar en Corpore10 y medicina estética de Essentia Lux."}
+                  </p>
+                </div>
+
+                {/* Qué incluye */}
+                <div className="space-y-1">
+                  <p className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">El evento incluye:</p>
+                  <div className="grid grid-cols-2 gap-1 text-[11px] text-gray-700">
+                    <div className="flex items-center gap-1"><Sparkles className="w-3 h-3 text-[#AF7E44] shrink-0" /><span>Presentación alianza</span></div>
+                    <div className="flex items-center gap-1"><Wine className="w-3 h-3 text-rose-500 shrink-0" /><span>Catering &amp; vinos</span></div>
+                    <div className="flex items-center gap-1"><Sparkles className="w-3 h-3 text-[#6A806C] shrink-0" /><span>Procedimientos en vivo</span></div>
+                    <div className="flex items-center gap-1"><Dumbbell className="w-3 h-3 text-gray-700 shrink-0" /><span>Charla salud &amp; deporte</span></div>
+                    <div className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" /><span>Portafolio exclusivo</span></div>
+                    <div className="flex items-center gap-1"><Award className="w-3 h-3 text-amber-500 shrink-0" /><span>Beneficios &amp; obsequios</span></div>
+                  </div>
+                </div>
+
+                {/* Logos */}
+                <div className="p-2 bg-amber-50/40 rounded-lg border border-amber-200/50">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-8 h-8 bg-[#FDF7EB] rounded-lg border border-[#AF7E44]/60 overflow-hidden shrink-0 flex items-center justify-center p-0.5">
+                      <img src="/logo-essentia-event.jpg" alt="Essentia Lux" className="w-full h-full object-cover" />
+                    </div>
+                    <span className="text-[#AF7E44] font-black text-[10px] select-none">✕</span>
+                    <div className="w-8 h-8 bg-black rounded-lg border border-gray-800 flex items-center justify-center p-0.5 shrink-0 overflow-hidden">
+                      <img src="/logo-corpore10-event.jpg" alt="Corpore10" className="w-full h-full object-contain" />
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-600 ml-1">Alianza Oficial</span>
+                  </div>
+                </div>
+              </div>
             </>
           )}
         </div>
