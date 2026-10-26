@@ -9,35 +9,98 @@ interface EventRegistrationEmailParams {
   spotsRemaining: number;
 }
 
-export async function sendEventRegistrationEmail(params: EventRegistrationEmailParams): Promise<{ sent: boolean; message: string }> {
-  const username = process.env.SMTP_USERNAME || process.env.SMTP_USER;
-  const password = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
-  const host = process.env.SMTP_HOST;
+function getTransporter() {
+  const username = (process.env.SMTP_USERNAME || process.env.SMTP_USER || "").trim();
+  const rawPassword = (process.env.SMTP_PASSWORD || process.env.SMTP_PASS || "");
+  // Las contraseñas de aplicación de Google vienen con espacios (ej. "abcd efgh ijkl mnop").
+  // Se eliminan para asegurar la autenticación correcta vía SASL.
+  const password = rawPassword.replace(/\s+/g, "");
+  const host = process.env.SMTP_HOST?.trim();
   const port = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 465;
 
   if (!username || !password) {
-    console.warn(
-      `[EVENT NOTIFICATION] Aviso: SMTP_USERNAME/SMTP_PASSWORD no configurados en .env.local. Registro simulado para ${params.fullName} (${params.phone}, @${params.instagramHandle}).`
-    );
+    return null;
+  }
+
+  return host
+    ? nodemailer.createTransport({
+        host,
+        port,
+        secure: port === 465,
+        auth: { user: username, pass: password },
+        connectionTimeout: 8000,
+        greetingTimeout: 8000,
+        socketTimeout: 8000,
+      })
+    : nodemailer.createTransport({
+        service: "gmail",
+        auth: { user: username, pass: password },
+        connectionTimeout: 8000,
+        greetingTimeout: 8000,
+        socketTimeout: 8000,
+      });
+}
+
+/**
+ * Verifica si la configuración SMTP está activa y valida la conexión con el servidor de correo.
+ */
+export async function verifyEmailConfiguration(): Promise<{
+  configured: boolean;
+  connected: boolean;
+  message: string;
+}> {
+  const username = (process.env.SMTP_USERNAME || process.env.SMTP_USER || "").trim();
+  const password = (process.env.SMTP_PASSWORD || process.env.SMTP_PASS || "").replace(/\s+/g, "");
+
+  if (!username || !password) {
     return {
-      sent: false,
-      message: "Credenciales SMTP no configuradas en el entorno local. Se registró en base de datos correctamente.",
+      configured: false,
+      connected: false,
+      message: "Variables SMTP_USERNAME y/o SMTP_PASSWORD no detectadas en el entorno.",
+    };
+  }
+
+  const transporter = getTransporter();
+  if (!transporter) {
+    return {
+      configured: false,
+      connected: false,
+      message: "No se pudo instanciar el transporte de correo.",
     };
   }
 
   try {
-    const transporter = host
-      ? nodemailer.createTransport({
-          host,
-          port,
-          secure: port === 465,
-          auth: { user: username, pass: password },
-        })
-      : nodemailer.createTransport({
-          service: "gmail",
-          auth: { user: username, pass: password },
-        });
+    await transporter.verify();
+    return {
+      configured: true,
+      connected: true,
+      message: `Conexión SMTP verificada exitosamente con el remitente: ${username}`,
+    };
+  } catch (err) {
+    const errorMsg = err instanceof Error ? err.message : "Error desconocido al conectar con el servidor SMTP";
+    return {
+      configured: true,
+      connected: false,
+      message: `Error de autenticación SMTP: ${errorMsg}`,
+    };
+  }
+}
 
+export async function sendEventRegistrationEmail(params: EventRegistrationEmailParams): Promise<{ sent: boolean; message: string }> {
+  const username = (process.env.SMTP_USERNAME || process.env.SMTP_USER || "").trim();
+  const transporter = getTransporter();
+
+  if (!transporter || !username) {
+    console.warn(
+      `[EVENT NOTIFICATION] Aviso: SMTP_USERNAME o SMTP_PASSWORD no configurados. Registro para ${params.fullName} (${params.phone}, @${params.instagramHandle}) procesado sin envío de email.`
+    );
+    return {
+      sent: false,
+      message: "Credenciales SMTP no configuradas. Se guardó el registro en base de datos correctamente.",
+    };
+  }
+
+  try {
     const htmlContent = `
       <!DOCTYPE html>
       <html lang="es">

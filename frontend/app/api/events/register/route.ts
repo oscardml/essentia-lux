@@ -127,6 +127,12 @@ export async function POST(req: NextRequest) {
       spotsRemaining,
     });
 
+    console.log("[EVENT REGISTRATION EMAIL RESULT]", {
+      sent: emailResult.sent,
+      message: emailResult.message,
+      to: "info@essluxam.com",
+    });
+
     return NextResponse.json({
       success: true,
       message: "¡Tu plaza ha sido reservada con éxito! Te esperamos el 28 de noviembre.",
