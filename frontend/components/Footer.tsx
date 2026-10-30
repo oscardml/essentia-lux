@@ -4,6 +4,13 @@ import Link from 'next/link';
 import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import { socialNetworks } from '@/data';
 
+const marcasConfianza = [
+  { name: 'Mesoestetic', src: '/marca1.png' },
+  { name: 'NAQUA', src: '/naqua.png' },
+  { name: 'Merz Aesthetics', src: '/marca3.png' },
+  { name: 'Sinclair', src: '/marca4.png' },
+];
+
 const Footer = () => {
   // Número de teléfono y mensaje predeterminado para WhatsApp
   const whatsappNumber = "34691589789";
@@ -27,12 +34,12 @@ const Footer = () => {
             Marcas de Confianza
           </h3>
           <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12">
-            {[1, 3, 4].map((num) => (
-              <div key={num} className="group">
+            {marcasConfianza.map((marca) => (
+              <div key={marca.name} className="group">
                 <div className="bg-white/20 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-4 sm:p-6 md:p-8 lg:p-10 group-hover:scale-105 border border-white/20">
                   <Image 
-                    src={`/marca${num}.png`} 
-                    alt={`Marca ${num}`} 
+                    src={marca.src} 
+                    alt={marca.name} 
                     width={200} 
                     height={150} 
                     className="w-20 h-12 sm:w-24 sm:h-16 md:w-32 md:h-24 lg:w-40 lg:h-50 object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
