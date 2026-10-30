@@ -8,8 +8,6 @@ import EventLateralWidget from '@/components/EventLateralWidget'
 export default function Home() {
   return (
     <div className="relative w-full min-h-screen overflow-hidden pb-16 bg-white">
-      {/* Zona lateral izquierda para eventos e inscripciones */}
-      <EventLateralWidget />
       
       {/* Fondo blanco con gradientes sutiles */}
       <div className="absolute inset-0 bg-white">
@@ -112,6 +110,9 @@ export default function Home() {
         <MotionTransition position="bottom" className="w-full">
           <PanelPromociones />
         </MotionTransition>
+
+        {/* Evento Open Day (lateral flotante en desktop, inline en móvil arriba de marcas de confianza) */}
+        <EventLateralWidget />
 
         {/* Floating elements decorativos minimalistas */}
         <div className="hidden lg:block absolute top-1/3 right-8 opacity-30">

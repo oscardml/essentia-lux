@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { EventItem } from "@/types/event";
 import { X, Calendar, MapPin, Instagram, Users, CheckCircle, Wine, Sparkles, Dumbbell, Award, ArrowRight } from "lucide-react";
 
@@ -24,6 +25,11 @@ export default function EventRegistrationModal({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Bloqueo de scroll en el body mientras el modal está abierto
   useEffect(() => {
@@ -47,7 +53,7 @@ export default function EventRegistrationModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen || !event) return null;
+  if (!isOpen || !event || !mounted) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,7 +110,7 @@ export default function EventRegistrationModal({
   const capacity = event.capacity ?? 30;
   const percentageTaken = Math.min(100, Math.round(((capacity - remaining) / capacity) * 100));
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[100000] flex items-end sm:items-center justify-center sm:p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
       onClick={onClose}
@@ -378,6 +384,7 @@ export default function EventRegistrationModal({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
