@@ -112,12 +112,12 @@ export default function EventRegistrationModal({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100000] flex items-end sm:items-center justify-center sm:p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-[100000] flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
       onClick={onClose}
     >
-      {/* CAJA DEL MODAL: bottom-sheet en móvil, centrado en desktop */}
+      {/* CAJA DEL MODAL: perfectamente centrada y contenida en cualquier pantalla */}
       <div 
-        className="relative w-full sm:max-w-[420px] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-[#AF7E44]/30 max-h-[90dvh] max-h-[90vh] flex flex-col overflow-hidden"
+        className="relative w-[calc(100%-24px)] sm:w-full max-w-[420px] bg-white rounded-2xl shadow-2xl border border-[#AF7E44]/30 max-h-[88vh] max-h-[88dvh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* CABECERA COMPACTA */}
@@ -220,7 +220,7 @@ export default function EventRegistrationModal({
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Ej. Carmen Rodríguez"
-                      className="w-full px-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
+                      className="w-full min-w-0 px-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
                     />
                   </div>
 
@@ -234,7 +234,7 @@ export default function EventRegistrationModal({
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Ej. 612 34 56 78"
-                      className="w-full px-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
+                      className="w-full min-w-0 px-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
                     />
                   </div>
 
@@ -250,7 +250,7 @@ export default function EventRegistrationModal({
                         value={instagramHandle}
                         onChange={(e) => setInstagramHandle(e.target.value)}
                         placeholder="tu_usuario"
-                        className="w-full pl-6 pr-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
+                        className="w-full min-w-0 pl-6 pr-2.5 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#AF7E44] text-sm text-gray-800"
                       />
                     </div>
                   </div>
@@ -319,26 +319,26 @@ export default function EventRegistrationModal({
               {/* DETALLES DEL EVENTO (debajo del formulario, accesibles con scroll) */}
               <div className="space-y-2">
                 {/* Información clave (2 columnas) */}
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
+                <div className="grid grid-cols-2 gap-2 min-w-0">
+                  <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100 min-w-0">
                     <div className="p-1.5 rounded bg-[#AF7E44]/10 text-[#AF7E44] shrink-0">
                       <Calendar className="w-3.5 h-3.5" />
                     </div>
-                    <div>
-                      <p className="text-[9px] font-semibold text-gray-500 uppercase">Fecha y Hora</p>
-                      <p className="text-[11px] font-bold text-gray-900 mt-0.5">Sáb, 28 Nov 2026</p>
-                      <p className="text-[10px] text-gray-600">Desde las 10:00 AM</p>
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-semibold text-gray-500 uppercase truncate">Fecha y Hora</p>
+                      <p className="text-[11px] font-bold text-gray-900 mt-0.5 truncate">Sáb, 28 Nov 2026</p>
+                      <p className="text-[10px] text-gray-600 truncate">Desde las 10:00 AM</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100 min-w-0">
                     <div className="p-1.5 rounded bg-[#6A806C]/10 text-[#6A806C] shrink-0">
                       <MapPin className="w-3.5 h-3.5" />
                     </div>
-                    <div>
-                      <p className="text-[9px] font-semibold text-gray-500 uppercase">Ubicación</p>
-                      <p className="text-[11px] font-bold text-gray-900 mt-0.5">Corpore10 Training</p>
-                      <p className="text-[10px] text-gray-600 leading-tight">Polígono Cros, Maliaño</p>
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-semibold text-gray-500 uppercase truncate">Ubicación</p>
+                      <p className="text-[11px] font-bold text-gray-900 mt-0.5 truncate">Corpore10 Training</p>
+                      <p className="text-[10px] text-gray-600 leading-tight break-words">Polígono Cros, Maliaño</p>
                     </div>
                   </div>
                 </div>
@@ -356,13 +356,13 @@ export default function EventRegistrationModal({
                 {/* Qué incluye */}
                 <div className="space-y-1">
                   <p className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">El evento incluye:</p>
-                  <div className="grid grid-cols-2 gap-1 text-[11px] text-gray-700">
-                    <div className="flex items-center gap-1"><Sparkles className="w-3 h-3 text-[#AF7E44] shrink-0" /><span>Presentación alianza</span></div>
-                    <div className="flex items-center gap-1"><Wine className="w-3 h-3 text-rose-500 shrink-0" /><span>Catering &amp; vinos</span></div>
-                    <div className="flex items-center gap-1"><Sparkles className="w-3 h-3 text-[#6A806C] shrink-0" /><span>Procedimientos en vivo</span></div>
-                    <div className="flex items-center gap-1"><Dumbbell className="w-3 h-3 text-gray-700 shrink-0" /><span>Charla salud &amp; deporte</span></div>
-                    <div className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" /><span>Portafolio exclusivo</span></div>
-                    <div className="flex items-center gap-1"><Award className="w-3 h-3 text-amber-500 shrink-0" /><span>Beneficios &amp; obsequios</span></div>
+                  <div className="grid grid-cols-2 gap-1 text-[11px] text-gray-700 min-w-0">
+                    <div className="flex items-center gap-1 min-w-0"><Sparkles className="w-3 h-3 text-[#AF7E44] shrink-0" /><span className="truncate">Presentación alianza</span></div>
+                    <div className="flex items-center gap-1 min-w-0"><Wine className="w-3 h-3 text-rose-500 shrink-0" /><span className="truncate">Catering &amp; vinos</span></div>
+                    <div className="flex items-center gap-1 min-w-0"><Sparkles className="w-3 h-3 text-[#6A806C] shrink-0" /><span className="truncate">Procedimientos en vivo</span></div>
+                    <div className="flex items-center gap-1 min-w-0"><Dumbbell className="w-3 h-3 text-gray-700 shrink-0" /><span className="truncate">Charla salud &amp; deporte</span></div>
+                    <div className="flex items-center gap-1 min-w-0"><CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" /><span className="truncate">Portafolio exclusivo</span></div>
+                    <div className="flex items-center gap-1 min-w-0"><Award className="w-3 h-3 text-amber-500 shrink-0" /><span className="truncate">Beneficios &amp; obsequios</span></div>
                   </div>
                 </div>
 
